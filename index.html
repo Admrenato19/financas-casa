@@ -1,0 +1,1030 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E5A47">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Finanças">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}[hidden]{display:none!important}</style>
+</head>
+<body>
+<title>Finanças da Casa</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: coluna única de celular (máx. 480px), cabeçalho verde em faixa, cartões brancos, barra inferior fixa com botão central de lançar */
+:root{
+  --bg:#F4F2EC; --surface:#FFFFFF; --surface-2:#F0EDE5; --line:#E4E0D6; --fg:#1B1D1A; --muted:#5F625B;
+  --brand:#1E5A47; --brand-deep:#143D30; --brand-ink:#FFFFFF; --brand-soft:#EAF2EE; --brand-text:#1E5A47; --hdr-sub:#CFE3DA;
+  --ok:#3A9A66; --ok-text:#23704A; --ok-soft:#E1F0E7;
+  --warn:#E39A14; --warn-text:#94560A; --warn-soft:#FBEFD6;
+  --bad:#D2453A; --bad-text:#B3312A; --bad-soft:#FBE3DF;
+  --info-soft:#E3E8F3; --info-text:#33497A;
+  --track:#ECE8DF; --tick:#1B1D1A; --scrim:rgba(20,22,20,.45);
+  --font:'Plus Jakarta Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#111412; --surface:#1A1E1B; --surface-2:#222723; --line:#2E3430; --fg:#ECEDE8; --muted:#A5AAA1;
+  --brand:#1E5A47; --brand-deep:#143D30; --brand-ink:#FFFFFF; --brand-soft:#1E3029; --brand-text:#86CDAE; --hdr-sub:#B9D7C9;
+  --ok:#4CB37A; --ok-text:#86D9A9; --ok-soft:#1D3327;
+  --warn:#E8A93A; --warn-text:#F2C56F; --warn-soft:#3A2F17;
+  --bad:#E0645A; --bad-text:#F5978F; --bad-soft:#3E2321;
+  --info-soft:#24304A; --info-text:#AFC2EA;
+  --track:#2C322E; --tick:#ECEDE8; --scrim:rgba(0,0,0,.6); color-scheme:dark;
+}}
+:root[data-theme="dark"]{
+  --bg:#111412; --surface:#1A1E1B; --surface-2:#222723; --line:#2E3430; --fg:#ECEDE8; --muted:#A5AAA1;
+  --brand:#1E5A47; --brand-deep:#143D30; --brand-ink:#FFFFFF; --brand-soft:#1E3029; --brand-text:#86CDAE; --hdr-sub:#B9D7C9;
+  --ok:#4CB37A; --ok-text:#86D9A9; --ok-soft:#1D3327;
+  --warn:#E8A93A; --warn-text:#F2C56F; --warn-soft:#3A2F17;
+  --bad:#E0645A; --bad-text:#F5978F; --bad-soft:#3E2321;
+  --info-soft:#24304A; --info-text:#AFC2EA;
+  --track:#2C322E; --tick:#ECEDE8; --scrim:rgba(0,0,0,.6); color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--fg); font-family:var(--font); font-size:15px; line-height:1.4; font-variant-numeric:tabular-nums; -webkit-tap-highlight-color:transparent}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); z-index:10; background:var(--brand)}
+button,input,select,textarea{font:inherit; color:inherit}
+button{cursor:pointer}
+:focus-visible{outline:3px solid var(--warn); outline-offset:2px}
+h1,h2,h3{margin:0; text-wrap:balance}
+.app{max-width:480px; margin:0 auto; min-height:100%; padding-bottom:calc(96px + env(safe-area-inset-bottom,0px))}
+.hdr{background:var(--brand); color:var(--brand-ink); padding-block:18px 20px; padding-left:max(20px, env(safe-area-inset-left,0px)); padding-right:max(20px, env(safe-area-inset-right,0px)); display:flex; flex-direction:column; gap:12px}
+.hdr.tall{padding-bottom:76px}
+.hdr-row{display:flex; align-items:center; justify-content:space-between; gap:8px}
+.hdr h1{font-size:23px; font-weight:800}
+.hdr .sub{font-size:13px; color:var(--hdr-sub)}
+.brandname{font-size:15px; font-weight:700}
+.big{font-size:36px; font-weight:800; letter-spacing:-.5px}
+.trio{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px}
+.trio span:first-child{display:block; font-size:12px; color:var(--hdr-sub)}
+.trio b{font-size:15px}
+.iconbtn{width:44px; height:44px; border:0; background:transparent; color:inherit; display:inline-flex; align-items:center; justify-content:center; border-radius:12px}
+.iconbtn:hover{background:rgba(255,255,255,.08)}
+.monthnav{display:flex; align-items:center; gap:2px; font-weight:600}
+.pill{display:inline-flex; align-items:center; gap:6px; font-size:12px; font-weight:700; padding:4px 10px; border-radius:999px; white-space:nowrap}
+.pill.ok{background:var(--ok-soft); color:var(--ok-text)} .pill.warn{background:var(--warn-soft); color:var(--warn-text)}
+.pill.bad{background:var(--bad-soft); color:var(--bad-text)} .pill.info{background:var(--info-soft); color:var(--info-text)}
+.pill.mute{background:var(--surface-2); color:var(--muted)} .pill.brand{background:var(--brand-soft); color:var(--brand-text)}
+.hdr .pill.sync{background:rgba(255,255,255,.14); color:var(--brand-ink); border:0}
+.main{padding-block:14px 8px; padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); display:flex; flex-direction:column; gap:14px}
+.main.lift{margin-top:-58px}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:20px; padding:16px; display:flex; flex-direction:column; gap:10px; min-width:0}
+.card.flush{padding:0; overflow:hidden; gap:0}
+.card h2{font-size:16px; font-weight:700}
+.row{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.row.base{align-items:baseline}
+.muted{color:var(--muted)} .small{font-size:13px} .tiny{font-size:12px}
+.kpis{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px}
+.kpi{display:flex; flex-direction:column; gap:5px; min-width:0}
+.kpi .lab{font-size:12px; font-weight:600; color:var(--muted)}
+.kpi .val{font-size:22px; font-weight:800}
+.kpi .val small{font-size:14px; font-weight:600; color:var(--muted)}
+.bar{position:relative; height:10px; margin:3px 0}
+.bar .trk{position:absolute; inset:0; border-radius:6px; background:var(--track); overflow:hidden}
+.bar .fill{height:100%; border-radius:6px}
+.bar .tick{position:absolute; top:-4px; width:2px; height:18px; border-radius:1px; background:var(--tick)}
+.bar.thin{height:8px}
+.f-ok{background:var(--ok)} .f-warn{background:var(--warn)} .f-bad{background:var(--bad)} .f-brand{background:var(--brand-text)}
+.t-ok{color:var(--ok-text)} .t-warn{color:var(--warn-text)} .t-bad{color:var(--bad-text)} .t-brand{color:var(--brand-text)}
+.list{display:flex; flex-direction:column}
+.li{display:flex; align-items:center; gap:12px; padding:11px 0; border-top:1px solid var(--line); text-align:left; width:100%; background:transparent; border-left:0; border-right:0; border-bottom:0}
+.list > .li:first-child{border-top:0}
+.li .grow{flex:1; min-width:0; display:flex; flex-direction:column; gap:2px}
+.li .t{font-size:14px; font-weight:600; overflow-wrap:anywhere}
+.li .s{font-size:12px; color:var(--muted)}
+.amt{font-size:14px; font-weight:700; white-space:nowrap}
+.ico{width:36px; height:36px; border-radius:11px; display:flex; align-items:center; justify-content:center; flex-shrink:0}
+.ico.lg{width:46px; height:46px; border-radius:15px}
+.ico.ok{background:var(--ok-soft); color:var(--ok-text)} .ico.warn{background:var(--warn-soft); color:var(--warn-text)}
+.ico.bad{background:var(--bad-soft); color:var(--bad-text)} .ico.brand{background:var(--brand-soft); color:var(--brand-text)}
+.ico.mute{background:var(--surface-2); color:var(--muted)}
+.chev{color:var(--muted); flex-shrink:0}
+.sec-h{background:var(--brand-soft); display:flex; align-items:center; justify-content:space-between; padding:4px 6px}
+.sec-h .ttl{display:flex; flex-direction:column; align-items:center}
+.sec-h .ttl b{font-size:16px; font-weight:800; color:var(--brand-text)}
+.sec-h .ttl span{font-size:12px; color:var(--muted)}
+.sec-h .iconbtn{color:var(--brand-text)}
+.bud{display:flex; gap:12px; padding:15px 16px; border:0; border-top:1px solid var(--line); background:transparent; width:100%; text-align:left}
+.bud .grow{flex:1; min-width:0; display:flex; flex-direction:column; gap:5px}
+.bud .name{font-size:15px; font-weight:700; overflow-wrap:anywhere}
+.bud .pct{font-size:15px; font-weight:800}
+.empty{padding:18px 16px; font-size:14px; color:var(--muted); text-align:center}
+.legend{display:flex; align-items:center; gap:10px; font-size:12px; color:var(--muted)}
+.legend .bar{flex:0 0 36px}
+.callout{border-radius:14px; padding:11px 13px; font-size:13px; line-height:1.4; display:flex; gap:10px; align-items:flex-start}
+.callout.brand{background:var(--brand-soft); color:var(--fg)} .callout.warn{background:var(--warn-soft); color:var(--fg)}
+.callout.bad{background:var(--bad-soft); color:var(--fg)}
+.btn{min-height:46px; border-radius:14px; border:0; background:var(--brand); color:var(--brand-ink); font-weight:700; font-size:15px; padding:0 16px; display:inline-flex; align-items:center; justify-content:center; gap:8px}
+.btn.ghost{background:transparent; color:var(--brand-text); border:1.5px solid var(--brand-text)}
+.btn.dashed{background:transparent; color:var(--brand-text); border:1.5px dashed var(--brand-text); opacity:.9}
+.btn.danger{background:transparent; color:var(--bad-text); border:1.5px solid var(--bad-text)}
+.btn.sm{min-height:38px; font-size:13px; border-radius:11px; padding:0 12px}
+.btn.wide{width:100%}
+.linkbtn{border:0; background:transparent; color:var(--brand-text); font-weight:700; font-size:13px; min-height:36px; padding:0 4px}
+.seg{display:grid; grid-auto-columns:minmax(0,1fr); grid-auto-flow:column; gap:4px; background:var(--surface-2); padding:4px; border-radius:14px}
+.seg button{min-height:40px; border:0; border-radius:11px; background:transparent; color:var(--muted); font-weight:700; font-size:14px}
+.seg button[aria-pressed="true"]{background:var(--surface); color:var(--fg); box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.chips{display:flex; flex-wrap:wrap; gap:8px}
+.chip{min-height:38px; padding:0 13px; border-radius:999px; border:1.5px solid var(--line); background:var(--surface); color:var(--fg); font-size:13px; font-weight:600}
+.chip[aria-pressed="true"]{background:var(--brand); border-color:var(--brand); color:var(--brand-ink)}
+.matrix{display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:4px}
+.matrix div{height:38px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:15px; color:#1B1D1A}
+.matrix .has{box-shadow:inset 0 0 0 2px #1B1D1A}
+.lv1{background:#DDEBE2} .lv2{background:#F6E3B4} .lv3{background:#F4C7A1} .lv4{background:#E9A39B}
+.axis-y{writing-mode:vertical-rl; transform:rotate(180deg); font-size:11px; font-weight:600; color:var(--muted); text-align:center}
+.stat3{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px}
+.stat3 > div{border-radius:12px; padding:10px; display:flex; flex-direction:column; gap:2px}
+.stat3 b{font-size:20px; font-weight:800}
+.split{display:flex; height:12px; border-radius:6px; overflow:hidden; background:var(--track)}
+.search{height:44px; border-radius:12px; border:1px solid var(--line); background:var(--surface); padding:0 12px; width:100%}
+.dayhdr{font-size:12px; font-weight:700; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; padding-top:6px}
+/* barra inferior */
+.nav{position:fixed; left:0; right:0; bottom:0; z-index:20; background:var(--surface); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom,0px); padding-left:env(safe-area-inset-left,0px); padding-right:env(safe-area-inset-right,0px)}
+.nav-in{max-width:480px; margin:0 auto; height:72px; display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); align-items:center}
+.nav button{border:0; background:transparent; color:var(--muted); font-size:11px; font-weight:500; display:flex; flex-direction:column; align-items:center; gap:3px; min-height:52px; justify-content:center}
+.nav button[aria-current="page"]{color:var(--brand-text); font-weight:700}
+.nav .fab{width:58px; height:58px; margin:-26px auto 0; border-radius:20px; background:var(--brand); color:#fff; display:flex; align-items:center; justify-content:center; box-shadow:0 6px 16px rgba(30,90,71,.35)}
+/* folha inferior (formulários) */
+.scrim{position:fixed; inset:0; background:var(--scrim); z-index:40; display:flex; align-items:flex-end; justify-content:center}
+.sheet{background:var(--bg); width:100%; max-width:480px; max-height:92%; overflow:auto; border-radius:22px 22px 0 0; padding-block:8px calc(18px + env(safe-area-inset-bottom,0px)); padding-left:max(16px, env(safe-area-inset-left,0px)); padding-right:max(16px, env(safe-area-inset-right,0px)); display:flex; flex-direction:column; gap:14px}
+.grab{width:40px; height:5px; border-radius:3px; background:var(--line); margin:4px auto 0}
+.sheet-h{display:flex; align-items:center; justify-content:space-between}
+.sheet-h h2{font-size:19px; font-weight:800}
+.fld{display:flex; flex-direction:column; gap:6px; min-width:0}
+.fld > label, .fld > .lab{font-size:13px; font-weight:700; color:var(--muted)}
+.inp{height:46px; border-radius:12px; border:1px solid var(--line); background:var(--surface); padding:0 12px; width:100%; min-width:0}
+textarea.inp{height:auto; min-height:84px; padding:10px 12px; resize:vertical}
+.amount{display:flex; flex-direction:column; align-items:center; gap:2px; background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:14px}
+.amount input{border:0; background:transparent; text-align:center; font-size:38px; font-weight:800; width:100%; letter-spacing:-.5px}
+.grid2{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px}
+.toast{position:fixed; left:50%; transform:translateX(-50%); bottom:calc(92px + env(safe-area-inset-bottom,0px)); background:var(--fg); color:var(--bg); padding:10px 16px; border-radius:12px; font-size:14px; font-weight:600; z-index:60; max-width:calc(100% - 32px)}
+@media (prefers-reduced-motion: no-preference){ .sheet{animation:up .22s ease-out} @keyframes up{from{transform:translateY(24px); opacity:.6}} }
+</style>
+
+<div class="app" id="app"><div id="view"></div></div>
+<nav class="nav" aria-label="Navegação principal"><div class="nav-in" id="nav"></div></nav>
+<div id="sheetRoot"></div>
+<div id="toastRoot" aria-live="polite"></div>
+
+<script>
+(function () {
+'use strict';
+
+/* =================== constantes =================== */
+var DEMO_DATA = {"Lancamentos": [{"ID": "L-dc9404c2", "Data": "2026-10-10", "Categoria": "Condomínio", "Descricao": "Condomínio (exemplo)", "Valor": 960, "Pessoa": "Nina", "Rateio": "Casa", "FormaPagamento": "", "CriadoEm": "2026-10-23T14:00", "CriadoPor": "migração"}, {"ID": "L-3f79aeac", "Data": "2026-10-12", "Categoria": "Restaurantes e delivery", "Descricao": "Jantar fora (exemplo)", "Valor": 180, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "", "CriadoEm": "2026-10-23T14:00", "CriadoPor": "migração"}, {"ID": "L-a4c123b1", "Data": "2026-10-05", "Categoria": "Salário Renato", "Descricao": "Salário (exemplo)", "Valor": 8000, "Pessoa": "Renato", "Rateio": "Pessoal", "FormaPagamento": "Transferência", "CriadoEm": "2026-10-05T09:00", "CriadoPor": "exemplo"}, {"ID": "L-612dd272", "Data": "2026-10-05", "Categoria": "Aporte em investimentos", "Descricao": "Aporte mensal (exemplo)", "Valor": 500, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Transferência", "CriadoEm": "2026-10-05T09:00", "CriadoPor": "exemplo"}, {"ID": "L-d1371c17", "Data": "2026-10-05", "Categoria": "Aporte na reserva de emergência", "Descricao": "Reserva (exemplo)", "Valor": 800, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Transferência", "CriadoEm": "2026-10-05T09:00", "CriadoPor": "exemplo"}, {"ID": "L-149d4395", "Data": "2026-10-06", "Categoria": "Energia", "Descricao": "Conta de luz (exemplo)", "Valor": 310, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Débito automático", "CriadoEm": "2026-10-06T09:00", "CriadoPor": "exemplo"}, {"ID": "L-36b3216f", "Data": "2026-10-06", "Categoria": "Água", "Descricao": "Conta de água (exemplo)", "Valor": 120, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Débito automático", "CriadoEm": "2026-10-06T09:00", "CriadoPor": "exemplo"}, {"ID": "L-daeeb975", "Data": "2026-10-08", "Categoria": "Internet e telefone", "Descricao": "Internet + celulares (exemplo)", "Valor": 250, "Pessoa": "Nina", "Rateio": "Casa", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-10-08T09:00", "CriadoPor": "exemplo"}, {"ID": "L-729fae92", "Data": "2026-10-07", "Categoria": "Alimentação básica (mercado)", "Descricao": "Compra do mês (exemplo)", "Valor": 1150, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-10-07T09:00", "CriadoPor": "exemplo"}, {"ID": "L-3d5a4fd1", "Data": "2026-10-20", "Categoria": "Mercado extra", "Descricao": "Hortifruti (exemplo)", "Valor": 96, "Pessoa": "Nina", "Rateio": "Casa", "FormaPagamento": "Pix", "CriadoEm": "2026-10-20T09:00", "CriadoPor": "exemplo"}, {"ID": "L-2aabfe22", "Data": "2026-10-22", "Categoria": "Mercado extra", "Descricao": "Padaria e frios (exemplo)", "Valor": 132, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Débito", "CriadoEm": "2026-10-22T09:00", "CriadoPor": "exemplo"}, {"ID": "L-8f219e9c", "Data": "2026-10-21", "Categoria": "Restaurantes e delivery", "Descricao": "Delivery (exemplo)", "Valor": 45, "Pessoa": "Nina", "Rateio": "Casa", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-10-21T09:00", "CriadoPor": "exemplo"}, {"ID": "L-b0eb53f1", "Data": "2026-10-10", "Categoria": "Escola e cursos", "Descricao": "Mensalidade (exemplo)", "Valor": 3000, "Pessoa": "Nina", "Rateio": "Casa", "FormaPagamento": "Boleto", "CriadoEm": "2026-10-10T09:00", "CriadoPor": "exemplo"}, {"ID": "L-6947ccf2", "Data": "2026-10-10", "Categoria": "Seguros", "Descricao": "Seguro residencial (exemplo)", "Valor": 42.25, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Débito automático", "CriadoEm": "2026-10-10T09:00", "CriadoPor": "exemplo"}, {"ID": "L-5ec84d8d", "Data": "2026-10-11", "Categoria": "Academia", "Descricao": "Academia (exemplo)", "Valor": 130, "Pessoa": "Nina", "Rateio": "Pessoal", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-10-11T09:00", "CriadoPor": "exemplo"}, {"ID": "L-bc742547", "Data": "2026-10-12", "Categoria": "Parcelas de compras no cartão", "Descricao": "Parcelas antigas (exemplo)", "Valor": 1100, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-10-12T09:00", "CriadoPor": "exemplo"}, {"ID": "L-70f58904", "Data": "2026-10-12", "Categoria": "Assinaturas no cartão", "Descricao": "Streaming e apps (exemplo)", "Valor": 140, "Pessoa": "Nina", "Rateio": "Casa", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-10-12T09:00", "CriadoPor": "exemplo"}, {"ID": "L-dba41ecc", "Data": "2026-10-15", "Categoria": "Empréstimos", "Descricao": "Parcela do empréstimo (exemplo)", "Valor": 1425, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Débito automático", "CriadoEm": "2026-10-15T09:00", "CriadoPor": "exemplo"}, {"ID": "L-cc3fc162", "Data": "2026-10-18", "Categoria": "Lazer", "Descricao": "Cinema (exemplo)", "Valor": 160, "Pessoa": "Nina", "Rateio": "Casa", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-10-18T09:00", "CriadoPor": "exemplo"}, {"ID": "L-6e53a130", "Data": "2026-10-14", "Categoria": "Transporte", "Descricao": "Combustível (exemplo)", "Valor": 380, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-10-14T09:00", "CriadoPor": "exemplo"}, {"ID": "L-43b026c4", "Data": "2026-10-16", "Categoria": "Cuidados pessoais", "Descricao": "Salão (exemplo)", "Valor": 210, "Pessoa": "Nina", "Rateio": "Pessoal", "FormaPagamento": "Pix", "CriadoEm": "2026-10-16T09:00", "CriadoPor": "exemplo"}, {"ID": "L-8bbf33fe", "Data": "2026-09-05", "Categoria": "Salário Renato", "Descricao": "Salário (exemplo)", "Valor": 8000, "Pessoa": "Renato", "Rateio": "Pessoal", "FormaPagamento": "Transferência", "CriadoEm": "2026-09-05T09:00", "CriadoPor": "exemplo"}, {"ID": "L-ff9243a8", "Data": "2026-09-10", "Categoria": "Salário Nina", "Descricao": "Salário (exemplo)", "Valor": 7000, "Pessoa": "Nina", "Rateio": "Pessoal", "FormaPagamento": "Transferência", "CriadoEm": "2026-09-10T09:00", "CriadoPor": "exemplo"}, {"ID": "L-f506b409", "Data": "2026-09-10", "Categoria": "Condomínio", "Descricao": "Condomínio (exemplo)", "Valor": 960, "Pessoa": "Nina", "Rateio": "Casa", "FormaPagamento": "Boleto", "CriadoEm": "2026-09-10T09:00", "CriadoPor": "exemplo"}, {"ID": "L-28b5b7a7", "Data": "2026-09-07", "Categoria": "Alimentação básica (mercado)", "Descricao": "Compra do mês (exemplo)", "Valor": 1300, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-09-07T09:00", "CriadoPor": "exemplo"}, {"ID": "L-67c76fb0", "Data": "2026-09-10", "Categoria": "Escola e cursos", "Descricao": "Mensalidade (exemplo)", "Valor": 3000, "Pessoa": "Nina", "Rateio": "Casa", "FormaPagamento": "Boleto", "CriadoEm": "2026-09-10T09:00", "CriadoPor": "exemplo"}, {"ID": "L-08f86beb", "Data": "2026-09-12", "Categoria": "Parcelas de compras no cartão", "Descricao": "Parcelas antigas (exemplo)", "Valor": 1100, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-09-12T09:00", "CriadoPor": "exemplo"}, {"ID": "L-b2737f6a", "Data": "2026-09-15", "Categoria": "Empréstimos", "Descricao": "Parcela do empréstimo (exemplo)", "Valor": 1425, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Débito automático", "CriadoEm": "2026-09-15T09:00", "CriadoPor": "exemplo"}, {"ID": "L-6f0fb23c", "Data": "2026-09-20", "Categoria": "Restaurantes e delivery", "Descricao": "Restaurantes (exemplo)", "Valor": 340, "Pessoa": "Nina", "Rateio": "Casa", "FormaPagamento": "Cartão de crédito", "CriadoEm": "2026-09-20T09:00", "CriadoPor": "exemplo"}, {"ID": "L-6f5da2ce", "Data": "2026-09-06", "Categoria": "Energia", "Descricao": "Conta de luz (exemplo)", "Valor": 290, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Débito automático", "CriadoEm": "2026-09-06T09:00", "CriadoPor": "exemplo"}, {"ID": "L-c255404e", "Data": "2026-09-05", "Categoria": "Aporte em investimentos", "Descricao": "Aporte mensal (exemplo)", "Valor": 500, "Pessoa": "Renato", "Rateio": "Casa", "FormaPagamento": "Transferência", "CriadoEm": "2026-09-05T09:00", "CriadoPor": "exemplo"}, {"ID": "L-7a8d41be", "Data": "2026-10-10", "Categoria": "Salário Nina", "Descricao": "Salário (exemplo)", "Valor": 7000, "Pessoa": "Nina", "Rateio": "Pessoal", "FormaPagamento": "Transferência", "CriadoEm": "2026-10-10T09:00", "CriadoPor": "exemplo"}], "Categorias": [{"Categoria": "Salário Renato", "Macro": "Renda do casal", "Ativa": "Sim"}, {"Categoria": "Salário Nina", "Macro": "Renda do casal", "Ativa": "Sim"}, {"Categoria": "Renda extra", "Macro": "Renda do casal", "Ativa": "Sim"}, {"Categoria": "13º, férias e bônus", "Macro": "Renda do casal", "Ativa": "Sim"}, {"Categoria": "Outras rendas", "Macro": "Renda do casal", "Ativa": "Sim"}, {"Categoria": "Condomínio", "Macro": "Despesas fixas essenciais", "Ativa": "Sim"}, {"Categoria": "IPTU", "Macro": "Despesas fixas essenciais", "Ativa": "Sim"}, {"Categoria": "Energia", "Macro": "Despesas fixas essenciais", "Ativa": "Sim"}, {"Categoria": "Água", "Macro": "Despesas fixas essenciais", "Ativa": "Sim"}, {"Categoria": "Gás", "Macro": "Despesas fixas essenciais", "Ativa": "Sim"}, {"Categoria": "Internet e telefone", "Macro": "Despesas fixas essenciais", "Ativa": "Sim"}, {"Categoria": "Alimentação básica (mercado)", "Macro": "Despesas fixas essenciais", "Ativa": "Sim"}, {"Categoria": "Transporte", "Macro": "Despesas fixas essenciais", "Ativa": "Sim"}, {"Categoria": "Escola e cursos", "Macro": "Despesas fixas pessoais", "Ativa": "Sim"}, {"Categoria": "Plano de saúde", "Macro": "Despesas fixas pessoais", "Ativa": "Sim"}, {"Categoria": "Seguros", "Macro": "Despesas fixas pessoais", "Ativa": "Sim"}, {"Categoria": "Medicamentos", "Macro": "Despesas fixas pessoais", "Ativa": "Sim"}, {"Categoria": "Academia", "Macro": "Despesas fixas pessoais", "Ativa": "Sim"}, {"Categoria": "Mercado extra", "Macro": "Despesas variáveis", "Ativa": "Sim"}, {"Categoria": "Lazer", "Macro": "Despesas variáveis", "Ativa": "Sim"}, {"Categoria": "Restaurantes e delivery", "Macro": "Despesas variáveis", "Ativa": "Sim"}, {"Categoria": "Apps e serviços digitais", "Macro": "Despesas variáveis", "Ativa": "Sim"}, {"Categoria": "Compras pontuais", "Macro": "Despesas variáveis", "Ativa": "Sim"}, {"Categoria": "Vestuário", "Macro": "Despesas variáveis", "Ativa": "Sim"}, {"Categoria": "Cuidados pessoais", "Macro": "Despesas variáveis", "Ativa": "Sim"}, {"Categoria": "Presentes", "Macro": "Despesas variáveis", "Ativa": "Sim"}, {"Categoria": "Manutenção da casa", "Macro": "Despesas variáveis", "Ativa": "Sim"}, {"Categoria": "Manutenção do carro", "Macro": "Despesas variáveis", "Ativa": "Sim"}, {"Categoria": "Parcelas de compras no cartão", "Macro": "Cartões de crédito", "Ativa": "Sim"}, {"Categoria": "Assinaturas no cartão", "Macro": "Cartões de crédito", "Ativa": "Sim"}, {"Categoria": "Anuidade, juros e tarifas do cartão", "Macro": "Cartões de crédito", "Ativa": "Sim"}, {"Categoria": "Financiamento imobiliário", "Macro": "Dívidas", "Ativa": "Sim"}, {"Categoria": "Financiamento de veículo", "Macro": "Dívidas", "Ativa": "Sim"}, {"Categoria": "Empréstimos", "Macro": "Dívidas", "Ativa": "Sim"}, {"Categoria": "Cheque especial e juros", "Macro": "Dívidas", "Ativa": "Sim"}, {"Categoria": "Aporte na reserva de emergência", "Macro": "Reserva de emergência", "Ativa": "Sim"}, {"Categoria": "Aporte em investimentos", "Macro": "Investimentos", "Ativa": "Sim"}, {"Categoria": "Previdência privada", "Macro": "Investimentos", "Ativa": "Sim"}, {"Categoria": "Aporte para objetivo de curto prazo", "Macro": "Objetivos de curto prazo", "Ativa": "Sim"}, {"Categoria": "Aporte para objetivo de médio prazo", "Macro": "Objetivos de médio prazo", "Ativa": "Sim"}, {"Categoria": "Aporte para objetivo de longo prazo", "Macro": "Objetivos de longo prazo", "Ativa": "Sim"}], "Macros": [{"Macro": "Renda do casal", "Tipo": "Entrada", "Ordem": 1}, {"Macro": "Despesas fixas essenciais", "Tipo": "Despesa", "Ordem": 2}, {"Macro": "Despesas fixas pessoais", "Tipo": "Despesa", "Ordem": 3}, {"Macro": "Despesas variáveis", "Tipo": "Despesa", "Ordem": 4}, {"Macro": "Cartões de crédito", "Tipo": "Despesa", "Ordem": 5}, {"Macro": "Dívidas", "Tipo": "Despesa", "Ordem": 6}, {"Macro": "Reserva de emergência", "Tipo": "Aporte", "Ordem": 7}, {"Macro": "Investimentos", "Tipo": "Aporte", "Ordem": 8}, {"Macro": "Objetivos de curto prazo", "Tipo": "Aporte", "Ordem": 9}, {"Macro": "Objetivos de médio prazo", "Tipo": "Aporte", "Ordem": 10}, {"Macro": "Objetivos de longo prazo", "Tipo": "Aporte", "Ordem": 11}], "Orcamentos": [{"ID": "O-b11ced94", "Nome": "Todas as despesas", "Escopo": "Total", "Alvo": "", "Periodicidade": "Mensal", "Limite": 10500, "Ativo": "Sim", "Obs": "Soma das despesas planejadas por categoria"}, {"ID": "O-ed37f9be", "Nome": "Restaurantes e delivery (semana)", "Escopo": "Categoria", "Alvo": "Restaurantes e delivery", "Periodicidade": "Semanal", "Limite": 80, "Ativo": "Sim", "Obs": "Exemplo: R$ 300/mês ÷ 4,3 semanas"}, {"ID": "O-0da4f031", "Nome": "Salário Nina", "Escopo": "Categoria", "Alvo": "Salário Nina", "Periodicidade": "Mensal", "Limite": 7500, "Ativo": "Sim", "Obs": "Renda planejada"}, {"ID": "O-b5a3ec57", "Nome": "Condomínio", "Escopo": "Categoria", "Alvo": "Condomínio", "Periodicidade": "Mensal", "Limite": 960, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-73416c1f", "Nome": "IPTU", "Escopo": "Categoria", "Alvo": "IPTU", "Periodicidade": "Mensal", "Limite": 500, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-1ee7bce5", "Nome": "Gás", "Escopo": "Categoria", "Alvo": "Gás", "Periodicidade": "Mensal", "Limite": 30, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-9e32ea25", "Nome": "Internet e telefone", "Escopo": "Categoria", "Alvo": "Internet e telefone", "Periodicidade": "Mensal", "Limite": 220, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-6e27304f", "Nome": "Escola e cursos", "Escopo": "Categoria", "Alvo": "Escola e cursos", "Periodicidade": "Mensal", "Limite": 3000, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-4bd913b0", "Nome": "Seguros", "Escopo": "Categoria", "Alvo": "Seguros", "Periodicidade": "Mensal", "Limite": 60, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-c48eb9e2", "Nome": "Medicamentos", "Escopo": "Categoria", "Alvo": "Medicamentos", "Periodicidade": "Mensal", "Limite": 150, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-e695228c", "Nome": "Academia", "Escopo": "Categoria", "Alvo": "Academia", "Periodicidade": "Mensal", "Limite": 120, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-73a18d8b", "Nome": "Restaurantes e delivery", "Escopo": "Categoria", "Alvo": "Restaurantes e delivery", "Periodicidade": "Mensal", "Limite": 350, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-433c7db1", "Nome": "Cuidados pessoais", "Escopo": "Categoria", "Alvo": "Cuidados pessoais", "Periodicidade": "Mensal", "Limite": 250, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-48b92dec", "Nome": "Parcelas de compras no cartão", "Escopo": "Categoria", "Alvo": "Parcelas de compras no cartão", "Periodicidade": "Mensal", "Limite": 1000, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-eecefedf", "Nome": "Assinaturas no cartão", "Escopo": "Categoria", "Alvo": "Assinaturas no cartão", "Periodicidade": "Mensal", "Limite": 120, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-75833a7c", "Nome": "Empréstimos", "Escopo": "Categoria", "Alvo": "Empréstimos", "Periodicidade": "Mensal", "Limite": 1425, "Ativo": "Sim", "Obs": "Migrado da planilha"}, {"ID": "O-3acc58ca", "Nome": "Aporte em investimentos", "Escopo": "Categoria", "Alvo": "Aporte em investimentos", "Periodicidade": "Mensal", "Limite": 500, "Ativo": "Sim", "Obs": "Aporte planejado"}], "Planos": [{"ID": "P-f82e04e3", "Horizonte": "Curto prazo", "Objetivo": "Viagem de férias (EXEMPLO — apagar)", "Motivo": "Descanso planejado, sem usar cartão parcelado", "ValorNecessario": 8000, "JaGuardado": 2000, "DataAlvo": "2027-07-01", "Responsavel": "Casal", "Status": "Em andamento", "ProximoPasso": "Guardar todo dia 5"}, {"ID": "P-3b3b1ec4", "Horizonte": "Curto prazo", "Objetivo": "Completar a reserva de emergência", "Motivo": "Proteger o casal de queda de renda (6 a 12 meses de despesas)", "ValorNecessario": 60000, "JaGuardado": 12000, "DataAlvo": "2027-12-01", "Responsavel": "Casal", "Status": "Em andamento", "ProximoPasso": "Definir meta de meses no Painel"}, {"ID": "P-802eaf9f", "Horizonte": "Curto prazo", "Objetivo": "Quitar dívidas caras (rotativo, cheque especial, empréstimos)", "Motivo": "Juros altos corroem o orçamento", "ValorNecessario": 18000, "JaGuardado": 0, "DataAlvo": "2027-10-01", "Responsavel": "Casal", "Status": "Planejado", "ProximoPasso": "Listar na aba Dívidas"}, {"ID": "P-8ab2d04e", "Horizonte": "Curto prazo", "Objetivo": "Compras planejadas do ano", "Motivo": "Evitar decidir por impulso", "ValorNecessario": "", "JaGuardado": "", "DataAlvo": "", "Responsavel": "Casal", "Status": "A definir", "ProximoPasso": ""}, {"ID": "P-1b074bd6", "Horizonte": "Médio prazo", "Objetivo": "Troca de carro", "Motivo": "", "ValorNecessario": "", "JaGuardado": "", "DataAlvo": "", "Responsavel": "Casal", "Status": "A definir", "ProximoPasso": ""}, {"ID": "P-1b73d2b7", "Horizonte": "Médio prazo", "Objetivo": "Reforma ou mudança de imóvel", "Motivo": "", "ValorNecessario": "", "JaGuardado": "", "DataAlvo": "", "Responsavel": "Casal", "Status": "A definir", "ProximoPasso": ""}, {"ID": "P-741fb95f", "Horizonte": "Médio prazo", "Objetivo": "Escola dos filhos", "Motivo": "", "ValorNecessario": "", "JaGuardado": "", "DataAlvo": "", "Responsavel": "Casal", "Status": "A definir", "ProximoPasso": ""}, {"ID": "P-d92a0149", "Horizonte": "Longo prazo", "Objetivo": "Aposentadoria / independência financeira", "Motivo": "Quanto precisam por mês para viver", "ValorNecessario": "", "JaGuardado": "", "DataAlvo": "", "Responsavel": "Casal", "Status": "A definir", "ProximoPasso": "Responder as perguntas da aba Combinados"}, {"ID": "P-9bde719b", "Horizonte": "Longo prazo", "Objetivo": "Quitação do financiamento imobiliário", "Motivo": "Morar sem parcela", "ValorNecessario": "", "JaGuardado": "", "DataAlvo": "", "Responsavel": "Casal", "Status": "A definir", "ProximoPasso": "Avaliar amortizações extras"}, {"ID": "P-466c12cd", "Horizonte": "Longo prazo", "Objetivo": "Faculdade dos filhos", "Motivo": "Mensalidade, moradia, apoio", "ValorNecessario": "", "JaGuardado": "", "DataAlvo": "", "Responsavel": "Casal", "Status": "A definir", "ProximoPasso": ""}, {"ID": "P-4304fa20", "Horizonte": "Longo prazo", "Objetivo": "Patrimônio acumulado", "Motivo": "Imóveis, investimentos, reservas", "ValorNecessario": "", "JaGuardado": "", "DataAlvo": "", "Responsavel": "Casal", "Status": "A definir", "ProximoPasso": ""}], "Dividas": [{"ID": "D-fb771f07", "Divida": "Financiamento imobiliário", "Credor": "Banco (exemplo)", "SaldoDevedor": 280000, "Parcela": 2400, "ParcelasRestantes": 340, "JurosMes": 0.008, "Obs": ""}, {"ID": "D-4fb44003", "Divida": "Empréstimo pessoal (exemplo)", "Credor": "Banco (exemplo)", "SaldoDevedor": 18000, "Parcela": 1425, "ParcelasRestantes": 16, "JurosMes": 0.029, "Obs": ""}], "Riscos": [{"ID": "R01", "Aplica": "Não", "Risco": "Renda instável (autônomo ou empresa)", "Categoria": "Empresa / PJ", "ImpactoFamilia": "Insegurança mensal, ansiedade, dificuldade de planejamento", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Separar renda da empresa × renda da família", "Controles": "C10", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R02", "Aplica": "Não", "Risco": "Falência ou quebra do negócio", "Categoria": "Empresa / PJ", "ImpactoFamilia": "Perda abrupta do padrão de vida", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Nunca depender 100% da empresa para o custo fixo da família", "Controles": "C06", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R03", "Aplica": "Não", "Risco": "Mistura de contas PF e PJ", "Categoria": "Empresa / PJ", "ImpactoFamilia": "Confusão financeira e conflitos no casal", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Contas separadas + pró-labore definido", "Controles": "C10", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R04", "Aplica": "Não", "Risco": "Ausência de pró-labore fixo", "Categoria": "Empresa / PJ", "ImpactoFamilia": "Família vive no improviso", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Definir salário mensal previsível", "Controles": "C10", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R05", "Aplica": "Não", "Risco": "Endividamento pessoal por dívida da empresa", "Categoria": "Empresa / PJ", "ImpactoFamilia": "Risco direto ao patrimônio familiar", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Limitar garantias pessoais e avais", "Controles": "C10", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R06", "Aplica": "Sim", "Risco": "Falta de reserva de emergência familiar", "Categoria": "Reserva e proteção", "ImpactoFamilia": "Crise imediata em caso de queda de renda", "Probabilidade": 4, "Impacto": 4, "Resposta": "Mitigar", "Mitigacao": "Reserva de 6 a 12 meses de despesas da família", "Controles": "C05, C06", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R07", "Aplica": "", "Risco": "Patrimônio todo concentrado no negócio", "Categoria": "Patrimônio", "ImpactoFamilia": "Família exposta ao risco do negócio", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Diversificar o patrimônio fora da empresa", "Controles": "C09", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R08", "Aplica": "Sim", "Risco": "Falta de seguro de vida", "Categoria": "Reserva e proteção", "ImpactoFamilia": "Vulnerabilidade total em caso de morte", "Probabilidade": 2, "Impacto": 5, "Resposta": "Mitigar", "Mitigacao": "Seguro de vida proporcional à renda e aos dependentes", "Controles": "C08", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R09", "Aplica": "", "Risco": "Falta de planejamento sucessório", "Categoria": "Sucessão", "ImpactoFamilia": "Conflitos, bloqueios e insegurança jurídica", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Testamento, previdência e estrutura patrimonial", "Controles": "C11", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R10", "Aplica": "", "Risco": "Imóvel no nome de quem tem dívidas de empresa", "Categoria": "Patrimônio", "ImpactoFamilia": "Risco de perda da moradia", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Proteção patrimonial dentro da lei", "Controles": "C10", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R11", "Aplica": "", "Risco": "Crescimento agressivo sem colchão financeiro", "Categoria": "Patrimônio", "ImpactoFamilia": "Estresse constante no lar", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Crescer só com margem de segurança", "Controles": "C06", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R12", "Aplica": "Sim", "Risco": "Ausência de diálogo financeiro no casal", "Categoria": "Relacionamento e combinados", "ImpactoFamilia": "Ressentimento e medo silencioso", "Probabilidade": 2, "Impacto": 3, "Resposta": "Mitigar", "Mitigacao": "Reuniões financeiras periódicas", "Controles": "C01", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R13", "Aplica": "", "Risco": "Dependência total da renda de um só", "Categoria": "Renda", "ImpactoFamilia": "Fragilidade estrutural da família", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Plano B de renda ou reservas maiores", "Controles": "C06", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R14", "Aplica": "", "Risco": "Planejamento baseado em renda futura", "Categoria": "Renda", "ImpactoFamilia": "Frustração e instabilidade", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Planejar apenas com renda atual e recorrente", "Controles": "C03, C09", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R15", "Aplica": "", "Risco": "Trabalho consumindo todo o tempo", "Categoria": "Relacionamento e combinados", "ImpactoFamilia": "Ausência emocional e desgaste familiar", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Limites claros entre trabalho e família", "Controles": "C01", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R16", "Aplica": "", "Risco": "Crises inesperadas (doença, desemprego, acidentes)", "Categoria": "Reserva e proteção", "ImpactoFamilia": "Queda de renda e aumento de gastos ao mesmo tempo", "Probabilidade": "", "Impacto": "", "Resposta": "Mitigar", "Mitigacao": "Reserva + seguros + plano de contingência", "Controles": "C05, C06, C08", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R17", "Aplica": "Sim", "Risco": "Uso de crédito rotativo, cheque especial ou empréstimo caro", "Categoria": "Dívidas", "ImpactoFamilia": "Juros altos comprometem o orçamento", "Probabilidade": 2, "Impacto": 4, "Resposta": "Mitigar", "Mitigacao": "Pagar a fatura integral; não usar rotativo nem cheque especial", "Controles": "C07", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R18", "Aplica": "Sim", "Risco": "Gastos por impulso e “viver no improviso”", "Categoria": "Relacionamento e combinados", "ImpactoFamilia": "Sobra pouco ou nada para os planos", "Probabilidade": 3, "Impacto": 2, "Resposta": "Mitigar", "Mitigacao": "Orçamento + metas mensais; decidir juntos gastos acima de um limite", "Controles": "C02, C03, C04", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}, {"ID": "R19", "Aplica": "Sim", "Risco": "Perda de renda comprometer a parcela do financiamento imobiliário", "Categoria": "Dívidas", "ImpactoFamilia": "Atraso nas parcelas e risco sobre a moradia", "Probabilidade": 3, "Impacto": 4, "Resposta": "Mitigar", "Mitigacao": "Reserva que cubra as parcelas; conferir a cobertura do seguro do contrato", "Controles": "C05, C08", "Responsavel": "Casal", "Status": "Aberto", "UltimaRevisao": ""}], "Controles": [{"ID": "C01", "Controle": "Reunião financeira mensal do casal", "Objetivo": "Manter os dois informados e decidir juntos", "Riscos": "R12, R15, R18", "Tipo": "Detectivo", "Evidencia": "Painel revisado e registro na aba Reuniões", "Meta": "1 por mês", "Frequencia": "Mensal", "Responsavel": "Casal", "UltimaVerificacao": "2026-10-04", "Resultado": "OK", "Obs": ""}, {"ID": "C02", "Controle": "Lançar os gastos da semana", "Objetivo": "Ter números reais para decidir", "Riscos": "R18", "Tipo": "Preventivo", "Evidencia": "Aba Lançamentos em dia", "Meta": "Até domingo", "Frequencia": "Semanal", "Responsavel": "Casal", "UltimaVerificacao": "2026-10-19", "Resultado": "OK", "Obs": ""}, {"ID": "C03", "Controle": "Revisar planejado × realizado", "Objetivo": "Corrigir o rumo antes de o mês fechar no vermelho", "Riscos": "R14, R18", "Tipo": "Detectivo", "Evidencia": "Tabela do Painel; saldo do mês ≥ 0", "Meta": "Nenhuma macro acima de 100%", "Frequencia": "Mensal", "Responsavel": "Casal", "UltimaVerificacao": "2026-10-04", "Resultado": "OK", "Obs": ""}, {"ID": "C04", "Controle": "Decidir juntos gastos acima do limite combinado", "Objetivo": "Evitar compras por impulso", "Riscos": "R12, R18", "Tipo": "Preventivo", "Evidencia": "Limite registrado na aba Combinados", "Meta": "Definir valor em Combinados", "Frequencia": "Contínuo", "Responsavel": "Casal", "UltimaVerificacao": "", "Resultado": "Não verificado", "Obs": ""}, {"ID": "C05", "Controle": "Aporte automático na reserva no dia do pagamento", "Objetivo": "Guardar antes de gastar", "Riscos": "R06, R16, R19", "Tipo": "Preventivo", "Evidencia": "Lançamento “Aporte na reserva de emergência” no mês", "Meta": "Valor planejado no Orçamento", "Frequencia": "Mensal", "Responsavel": "Casal", "UltimaVerificacao": "", "Resultado": "Não verificado", "Obs": ""}, {"ID": "C06", "Controle": "Conferir meses cobertos pela reserva", "Objetivo": "Saber quanto tempo a família aguenta sem renda", "Riscos": "R02, R06, R11, R13, R16", "Tipo": "Detectivo", "Evidencia": "Indicador “Meses cobertos” no Painel", "Meta": "Meta de meses do Painel", "Frequencia": "Mensal", "Responsavel": "Casal", "UltimaVerificacao": "", "Resultado": "Não verificado", "Obs": ""}, {"ID": "C07", "Controle": "Pagar a fatura do cartão integral e conferir os lançamentos", "Objetivo": "Evitar juros e cobranças indevidas", "Riscos": "R17", "Tipo": "Preventivo", "Evidencia": "Fatura paga no vencimento; nenhum juro lançado", "Meta": "R$ 0 em juros", "Frequencia": "Mensal", "Responsavel": "Casal", "UltimaVerificacao": "2026-10-10", "Resultado": "OK", "Obs": ""}, {"ID": "C08", "Controle": "Revisar seguros (vida, residencial e seguro do financiamento)", "Objetivo": "Garantir proteção adequada à família", "Riscos": "R08, R16, R19", "Tipo": "Preventivo", "Evidencia": "Apólices e coberturas atualizadas", "Meta": "", "Frequencia": "Anual", "Responsavel": "Casal", "UltimaVerificacao": "2025-09-10", "Resultado": "OK", "Obs": ""}, {"ID": "C09", "Controle": "Revisar os planos de curto, médio e longo prazo", "Objetivo": "Manter os planos coerentes com a renda atual", "Riscos": "R07, R14", "Tipo": "Detectivo", "Evidencia": "Aba Planos atualizada", "Meta": "", "Frequencia": "Trimestral", "Responsavel": "Casal", "UltimaVerificacao": "", "Resultado": "Não verificado", "Obs": ""}, {"ID": "C10", "Controle": "Separar contas PF e PJ e manter pró-labore fixo (se houver empresa)", "Objetivo": "Não misturar o dinheiro da empresa com o da família", "Riscos": "R01, R03, R04, R05, R10", "Tipo": "Preventivo", "Evidencia": "Extratos separados", "Meta": "", "Frequencia": "Mensal", "Responsavel": "Casal", "UltimaVerificacao": "", "Resultado": "Não verificado", "Obs": ""}, {"ID": "C11", "Controle": "Revisar beneficiários e documentos sucessórios", "Objetivo": "Evitar bloqueios e conflitos", "Riscos": "R09", "Tipo": "Preventivo", "Evidencia": "Previdência, seguros e testamento revisados", "Meta": "", "Frequencia": "Anual", "Responsavel": "Casal", "UltimaVerificacao": "", "Resultado": "Não verificado", "Obs": ""}, {"ID": "C12", "Controle": "Revisar a matriz de riscos", "Objetivo": "Manter os riscos e as notas atualizados", "Riscos": "Todos", "Tipo": "Detectivo", "Evidencia": "Coluna “Última revisão” da aba Riscos", "Meta": "", "Frequencia": "Semestral", "Responsavel": "Casal", "UltimaVerificacao": "", "Resultado": "Não verificado", "Obs": ""}], "Combinados": [{"ID": "K-342cb907", "Tema": "Organização financeira", "Pergunta": "Caixa único ou contas separadas?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-d35374d8", "Tema": "Organização financeira", "Pergunta": "Como as contas da casa são divididas (igual, proporcional à renda, caixa único)?", "Decisao": "Proporcional à renda de cada um (exemplo)", "DataDecisao": "2026-10-04", "RevisarEm": ""}, {"ID": "K-f8ef5768", "Tema": "Organização financeira", "Pergunta": "O que cada um compartilha com o outro (transparência)?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-2640d3bd", "Tema": "Organização financeira", "Pergunta": "Quem decide o quê?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-bb42df2f", "Tema": "Organização financeira", "Pergunta": "Acima de quanto (R$) um gasto precisa ser decidido pelos dois?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-cd5a3256", "Tema": "Organização financeira", "Pergunta": "Quais as regras para assumir dívidas?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-792b7f11", "Tema": "Organização financeira", "Pergunta": "Quais as regras para investir?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-22ca1146", "Tema": "Renda e carreira", "Pergunta": "Como tratar renda individual × renda da família?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-b0eec719", "Tema": "Renda e carreira", "Pergunta": "Como lidar quando um ganha mais que o outro?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-70b80787", "Tema": "Renda e carreira", "Pergunta": "Como se preparar para pausas de carreira?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-ef473529", "Tema": "Renda e carreira", "Pergunta": "Que sacrifícios temporários aceitam por objetivos maiores?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-c83fac5d", "Tema": "Consumo e padrão de vida", "Pergunta": "Qual padrão de vida é sustentável para vocês?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-c453f164", "Tema": "Consumo e padrão de vida", "Pergunta": "Como evitar pressão social e consumo para aparecer?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-3febd654", "Tema": "Consumo e padrão de vida", "Pergunta": "Como identificar e controlar gastos emocionais?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-770d59d4", "Tema": "Consumo e padrão de vida", "Pergunta": "Quais são as três prioridades do casal hoje?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-4c9ec800", "Tema": "Perguntas sobre o futuro", "Pergunta": "Em que momento da vida vocês gostariam de desacelerar ou parar de trabalhar?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-061e65a9", "Tema": "Perguntas sobre o futuro", "Pergunta": "Vocês querem parar juntos ou cada um imagina um tempo diferente?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-d361fbbd", "Tema": "Perguntas sobre o futuro", "Pergunta": "Que tipo de vida vocês imaginam aos 60, 70 e 80 anos?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-03a33084", "Tema": "Perguntas sobre o futuro", "Pergunta": "Onde vocês gostariam de viver nessa fase?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-2e5bd723", "Tema": "Perguntas sobre o futuro", "Pergunta": "Quanto dinheiro por mês vocês acreditam que precisariam para viver bem nessa etapa?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-e22f15af", "Tema": "Perguntas sobre o futuro", "Pergunta": "O trabalho que vocês fazem hoje está construindo esse futuro ou apenas pagando o presente?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-703f61f1", "Tema": "Perguntas sobre o futuro", "Pergunta": "O que vocês desejam deixar para os filhos: dinheiro, educação, valores, tranquilidade?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-0c0bad16", "Tema": "Perguntas sobre o futuro", "Pergunta": "Vocês querem ajudar financeiramente os filhos na vida adulta? Até onde?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-65305b63", "Tema": "Perguntas sobre o futuro", "Pergunta": "Quanto de patrimônio faria vocês se sentirem seguros, não ricos?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-ac0b7bf0", "Tema": "Perguntas sobre o futuro", "Pergunta": "O que é, para vocês, aproveitar bem o fim da vida?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-a73f636e", "Tema": "Perguntas sobre o futuro", "Pergunta": "Se nada mudar, a vida que vocês terão aos 70 anos será boa ou frustrante?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}, {"ID": "K-53f4d2b9", "Tema": "Perguntas sobre o futuro", "Pergunta": "O que precisaria começar a mudar a partir de agora para esse futuro existir?", "Decisao": "", "DataDecisao": "", "RevisarEm": ""}], "Reunioes": [{"ID": "M-4d660869", "Data": "2026-10-04", "Participantes": "Renato e Nina", "Pontos": "Primeira organização (exemplo)", "Decisoes": "Dividir as contas da casa proporcionalmente à renda (exemplo)", "Pendencias": "Dar notas aos riscos", "Responsavel": "Casal", "Prazo": "2026-11-01"}], "Config": [{"Chave": "pessoa1", "Valor": "Renato", "Descricao": "Nome da primeira pessoa"}, {"Chave": "pessoa2", "Valor": "Nina", "Descricao": "Nome da segunda pessoa"}, {"Chave": "regra_divisao", "Valor": "proporcional", "Descricao": "proporcional (à renda do mês) ou igual (50/50)"}, {"Chave": "reserva_meta_meses", "Valor": 6, "Descricao": "Meta da reserva de emergência em meses de despesa (6 a 12)"}, {"Chave": "reserva_saldo", "Valor": 12000, "Descricao": "Saldo atual da reserva (atualizem todo mês)"}, {"Chave": "inicio_semana", "Valor": "segunda", "Descricao": "segunda ou domingo"}]};
+var SHEETS = ['Lancamentos','Categorias','Macros','Orcamentos','Planos','Dividas','Riscos','Controles','Combinados','Reunioes','Config'];
+var KEYCOL = { Categorias:'Categoria', Macros:'Macro', Config:'Chave' };
+var MACROS_PADRAO = [['Renda do casal','Entrada'],['Despesas fixas essenciais','Despesa'],['Despesas fixas pessoais','Despesa'],['Despesas variáveis','Despesa'],['Cartões de crédito','Despesa'],['Dívidas','Despesa'],['Reserva de emergência','Aporte'],['Investimentos','Aporte'],['Objetivos de curto prazo','Aporte'],['Objetivos de médio prazo','Aporte'],['Objetivos de longo prazo','Aporte']];
+var FORMAS = ['Pix','Débito','Cartão de crédito','Boleto','Débito automático','Dinheiro','Transferência'];
+var FREQ_DIAS = { 'Semanal':7, 'Mensal':31, 'Trimestral':92, 'Semestral':183, 'Anual':366 };
+var MESES = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+var MES3 = ['jan','fev','mar','abr','mai','jun','jul','ago','set','out','nov','dez'];
+var LS = { cfg:'fc_cfg_v1', data:'fc_data_v1', queue:'fc_queue_v1' };
+
+/* =================== armazenamento local =================== */
+function lsGet(k, fb) { try { var v = localStorage.getItem(k); return v ? JSON.parse(v) : fb; } catch (e) { return fb; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+
+var cfg = lsGet(LS.cfg, { url:'', token:'', demo:true, autor:'' });
+var data = lsGet(LS.data, null) || clone(DEMO_DATA) || emptyData();
+var queue = lsGet(LS.queue, []);
+var sync = { state: cfg.demo || !cfg.url ? 'demo' : 'idle', msg:'' };
+
+var ui = {
+  tab:'inicio', ym: ymOf(new Date()), off:{ Semanal:0, Mensal:0, Anual:0 },
+  q:'', debtOrder:'juros', sim:{}, riskFilter:'aplica'
+};
+
+function emptyData() { var d = {}; SHEETS.forEach(function (s) { d[s] = []; }); return d; }
+function clone(x) { return x == null ? x : JSON.parse(JSON.stringify(x)); }
+
+/* =================== utilitários =================== */
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]; }); }
+function num(v) {
+  if (typeof v === 'number') return isFinite(v) ? v : 0;
+  if (v == null || v === '') return 0;
+  var s = String(v).replace(/R\$|\s/g, '');
+  if (s.indexOf(',') >= 0) s = s.replace(/\./g, '').replace(',', '.');
+  var n = parseFloat(s); return isFinite(n) ? n : 0;
+}
+function brl(v, dec) {
+  var d = dec === 0 ? 0 : 2;
+  return 'R$ ' + num(v).toLocaleString('pt-BR', { minimumFractionDigits:d, maximumFractionDigits:d });
+}
+function brl0(v) { return brl(v, 0); }
+function pctf(v, d) { return (v * 100).toLocaleString('pt-BR', { minimumFractionDigits:d || 0, maximumFractionDigits:d || 0 }) + '%'; }
+function pad(n) { return (n < 10 ? '0' : '') + n; }
+function ymd(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+function ymOf(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1); }
+function parseD(s) {
+  if (!s) return null;
+  if (s instanceof Date) return s;
+  var m = String(s).match(/^(\d{4})-(\d{2})-(\d{2})(?:T(\d{2}):(\d{2}))?/);
+  if (m) return new Date(+m[1], +m[2] - 1, +m[3], +(m[4] || 0), +(m[5] || 0));
+  m = String(s).match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (m) return new Date(+m[3], +m[2] - 1, +m[1]);
+  return null;
+}
+function today() { var d = new Date(); return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+function addDays(d, n) { var x = new Date(d); x.setDate(x.getDate() + n); return x; }
+function dm(d) { return pad(d.getDate()) + '/' + pad(d.getMonth() + 1); }
+function dmy(d) { return d ? pad(d.getDate()) + '/' + pad(d.getMonth() + 1) + '/' + d.getFullYear() : ''; }
+function monthLabel(ym) { var p = ym.split('-'); var s = MESES[+p[1] - 1]; return s.charAt(0).toUpperCase() + s.slice(1) + ' ' + p[0]; }
+function shiftYm(ym, n) { var p = ym.split('-'); var d = new Date(+p[0], +p[1] - 1 + n, 1); return ymOf(d); }
+function monthsBetween(a, b) { return (b.getFullYear() - a.getFullYear()) * 12 + (b.getMonth() - a.getMonth()); }
+function uid(p) { var r = ''; for (var i = 0; i < 8; i++) r += Math.floor(Math.random() * 16).toString(16); return p + '-' + r; }
+function conf(k, fb) { var r = (data.Config || []).filter(function (x) { return x.Chave === k; })[0]; return r && r.Valor !== '' && r.Valor != null ? r.Valor : fb; }
+function pessoas() { return [String(conf('pessoa1', 'Renato')), String(conf('pessoa2', 'Nina'))]; }
+function juros(v) { var n = num(v); return n > 1 ? n / 100 : n; }
+
+/* =================== ícones =================== */
+var P = {
+  home:'<path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/>',
+  list:'<path d="M4 6h10M4 12h16M4 18h7"/>',
+  plus:'<path d="M12 5v14M5 12h14"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+  people:'<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14.2A5 5 0 0 1 21.5 19"/>',
+  left:'<path d="M15 18 9 12l6-6"/>', right:'<path d="m9 18 6-6-6-6"/>', x:'<path d="M6 6l12 12M18 6 6 18"/>',
+  alert:'<circle cx="12" cy="12" r="9"/><path d="M12 7.5v5M12 16h.01"/>',
+  shield:'<path d="M12 3 4 6v6c0 4.5 3.4 8.2 8 9 4.6-.8 8-4.5 8-9V6z"/>',
+  swap:'<path d="M4 8h13l-3-3M20 16H7l3 3"/>',
+  gear:'<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/>',
+  sync:'<path d="M20 11a8 8 0 0 0-14.3-4.9L4 8M4 4v4h4M4 13a8 8 0 0 0 14.3 4.9L20 16M20 20v-4h-4"/>',
+  food:'<path d="M7 3v8M5 3v5a2 2 0 0 0 4 0V3M7 11v10M17 3c-2 1.5-3 4-3 7h3v11"/>',
+  cart:'<path d="M3 4h2l2.4 11h10.2L20 8H6.2"/><circle cx="9" cy="19.5" r="1.5"/><circle cx="17" cy="19.5" r="1.5"/>',
+  wave:'<path d="M3 15c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/><path d="M3 9c2-4 4-4 6 0s4 4 6 0 4-4 6 0"/>',
+  card:'<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 10h18M7 15h4"/>',
+  coin:'<circle cx="12" cy="12" r="9"/><path d="M14.5 9.5c-.5-1-1.5-1.5-2.5-1.5-1.4 0-2.5.8-2.5 2s1.1 1.7 2.5 2 2.5.8 2.5 2-1.1 2-2.5 2c-1 0-2-.5-2.5-1.5M12 6.5V8M12 16v1.5"/>',
+  pie:'<circle cx="12" cy="12" r="9"/><path d="M12 3v9l6.4 6.4"/>',
+  user:'<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  bank:'<path d="M3 10h18L12 4zM5 10v8M9 10v8M15 10v8M19 10v8M3 20h18"/>',
+  check:'<path d="m5 12 4.5 4.5L19 7"/>'
+};
+function ic(name, size) { var s = size || 22; return '<svg width="' + s + '" height="' + s + '" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (P[name] || '') + '</svg>'; }
+function macroIcon(m) {
+  return { 'Renda do casal':'coin', 'Despesas fixas essenciais':'home', 'Despesas fixas pessoais':'user', 'Despesas variáveis':'wave', 'Cartões de crédito':'card', 'Dívidas':'bank', 'Reserva de emergência':'shield', 'Investimentos':'target' }[m] || 'target';
+}
+function catIcon(c, m) {
+  if (/restaurante|delivery/i.test(c)) return 'food';
+  if (/mercado|alimenta/i.test(c)) return 'cart';
+  return macroIcon(m);
+}
+
+/* =================== modelo =================== */
+function macroTipo() {
+  var map = {};
+  MACROS_PADRAO.forEach(function (m) { map[m[0]] = m[1]; });
+  (data.Macros || []).forEach(function (m) { if (m.Macro) map[m.Macro] = m.Tipo; });
+  return map;
+}
+function catMacro() { var map = {}; (data.Categorias || []).forEach(function (c) { map[c.Categoria] = c.Macro; }); return map; }
+function macrosOrdenadas() {
+  var ms = (data.Macros && data.Macros.length) ? data.Macros.slice().sort(function (a, b) { return num(a.Ordem) - num(b.Ordem); }).map(function (m) { return m.Macro; }) : MACROS_PADRAO.map(function (m) { return m[0]; });
+  return ms;
+}
+function lancs() {
+  var mt = macroTipo(), cm = catMacro();
+  return (data.Lancamentos || []).map(function (l) {
+    var macro = cm[l.Categoria] || '';
+    return { raw:l, id:l.ID, d:parseD(l.Data), cat:l.Categoria || 'Sem categoria', macro:macro, tipo:mt[macro] || 'Despesa', v:Math.abs(num(l.Valor)), desc:l.Descricao || '', pessoa:l.Pessoa || '', rateio:l.Rateio || 'Casa', forma:l.FormaPagamento || '' };
+  }).filter(function (l) { return l.d; }).sort(function (a, b) { return b.d - a.d; });
+}
+function inRange(d, s, e) { return d >= s && d <= e; }
+function monthRange(ym) { var p = ym.split('-'); var s = new Date(+p[0], +p[1] - 1, 1); return [s, new Date(+p[0], +p[1], 0)]; }
+
+function resumoMes(ym, L) {
+  var r = monthRange(ym), out = { renda:0, despesa:0, aporte:0 };
+  L.forEach(function (l) { if (inRange(l.d, r[0], r[1])) { if (l.tipo === 'Entrada') out.renda += l.v; else if (l.tipo === 'Aporte') out.aporte += l.v; else out.despesa += l.v; } });
+  out.saldo = out.renda - out.despesa - out.aporte;
+  out.poup = out.renda ? out.aporte / out.renda : 0;
+  return out;
+}
+function despesaMedia(L) {
+  var meses = {};
+  L.forEach(function (l) { var k = ymOf(l.d); meses[k] = meses[k] || { r:0, d:0 }; if (l.tipo === 'Entrada') meses[k].r += l.v; else if (l.tipo === 'Despesa') meses[k].d += l.v; });
+  var ks = Object.keys(meses).filter(function (k) { return meses[k].r > 0; });
+  if (!ks.length) return 0;
+  return ks.reduce(function (s, k) { return s + meses[k].d; }, 0) / ks.length;
+}
+function parcelasDividas() { return (data.Dividas || []).reduce(function (s, d) { return s + num(d.Parcela); }, 0); }
+
+/* períodos dos orçamentos */
+function periodo(kind, off) {
+  var t = today(), s, e, label, sub;
+  if (kind === 'Semanal') {
+    var segunda = String(conf('inicio_semana', 'segunda')).toLowerCase() !== 'domingo';
+    var dow = t.getDay(); var back = segunda ? (dow + 6) % 7 : dow;
+    s = addDays(t, -back + 7 * off); e = addDays(s, 6);
+    label = off === 0 ? 'Esta semana' : (off === -1 ? 'Semana passada' : 'Semana');
+    sub = dm(s) + ' a ' + dm(e);
+  } else if (kind === 'Mensal') {
+    s = new Date(t.getFullYear(), t.getMonth() + off, 1); e = new Date(s.getFullYear(), s.getMonth() + 1, 0);
+    label = monthLabel(ymOf(s)); sub = dm(s) + ' a ' + dm(e);
+  } else {
+    s = new Date(t.getFullYear() + off, 0, 1); e = new Date(s.getFullYear(), 11, 31);
+    label = 'Ano ' + s.getFullYear(); sub = '01/01 a 31/12';
+  }
+  var total = Math.round((e - s) / 864e5) + 1, passado;
+  if (t > e) passado = total; else if (t < s) passado = 0; else passado = Math.round((t - s) / 864e5) + 1;
+  var ritmo = passado / total;
+  if (off === 0) sub += kind === 'Anual' ? ' · ' + pctf(ritmo) + ' do ano' : ' · dia ' + passado + ' de ' + total;
+  return { s:s, e:e, label:label, sub:sub, ritmo:ritmo };
+}
+function budgetTipo(b, mt, cm) {
+  if (b.Escopo === 'Total') return 'Despesa';
+  if (b.Escopo === 'Macro') return mt[b.Alvo] || 'Despesa';
+  return mt[cm[b.Alvo]] || 'Despesa';
+}
+function gastoNo(b, s, e, L, cm, extra) {
+  var tipo = budgetTipo(b, macroTipo(), cm);
+  var tot = 0;
+  L.concat(extra ? [extra] : []).forEach(function (l) {
+    if (!inRange(l.d, s, e) || l.tipo !== tipo) return;
+    if (b.Escopo === 'Total' || (b.Escopo === 'Macro' && l.macro === b.Alvo) || (b.Escopo === 'Categoria' && l.cat === b.Alvo)) tot += l.v;
+  });
+  return tot;
+}
+function status(p) { return p > 1 ? 'bad' : (p >= .9 ? 'warn' : 'ok'); }
+function orcamentosDe(kind, off, L) {
+  var mt = macroTipo(), cm = catMacro(), per = periodo(kind, off);
+  var itens = (data.Orcamentos || []).filter(function (b) {
+    return b.Periodicidade === kind && String(b.Ativo || 'Sim') !== 'Não' && budgetTipo(b, mt, cm) === 'Despesa' && num(b.Limite) > 0;
+  }).map(function (b) {
+    var g = gastoNo(b, per.s, per.e, L, cm), lim = num(b.Limite), p = g / lim;
+    return { b:b, gasto:g, lim:lim, p:p, st:status(p), icon: b.Escopo === 'Total' ? 'pie' : (b.Escopo === 'Macro' ? macroIcon(b.Alvo) : catIcon(b.Alvo, cm[b.Alvo])) };
+  });
+  itens.sort(function (a, b) { return (a.b.Escopo === 'Total' ? -1 : 0) - (b.b.Escopo === 'Total' ? -1 : 0) || b.p - a.p; });
+  return { per:per, itens:itens };
+}
+
+/* acerto do mês */
+function acerto(ym, L) {
+  var ps = pessoas(), r = monthRange(ym), renda = {}, pago = {};
+  ps.forEach(function (p) { renda[p] = 0; pago[p] = 0; });
+  var total = 0;
+  L.forEach(function (l) {
+    if (!inRange(l.d, r[0], r[1])) return;
+    if (l.tipo === 'Entrada') { if (renda[l.pessoa] != null) renda[l.pessoa] += l.v; return; }
+    if (l.rateio !== 'Casa') return;
+    if (pago[l.pessoa] != null) { pago[l.pessoa] += l.v; total += l.v; }
+  });
+  var regra = String(conf('regra_divisao', 'proporcional')).toLowerCase();
+  var rt = renda[ps[0]] + renda[ps[1]];
+  var share0 = (regra.indexOf('prop') === 0 && rt > 0) ? renda[ps[0]] / rt : .5;
+  var deve0 = total * share0, dif = pago[ps[0]] - deve0;
+  return { ps:ps, pago:pago, total:total, share0:share0, regra: (regra.indexOf('prop') === 0 && rt > 0) ? 'proporcional' : 'igual', de: dif < 0 ? ps[0] : ps[1], para: dif < 0 ? ps[1] : ps[0], valor:Math.abs(dif) };
+}
+
+/* controles */
+function statusControle(c) {
+  if (c.Frequencia === 'Contínuo') return { k:'mute', t:'Contínuo' };
+  var d = parseD(c.UltimaVerificacao);
+  if (!d) return { k:'mute', t:'Sem registro' };
+  var dias = FREQ_DIAS[c.Frequencia] || 31;
+  var prox = addDays(d, dias);
+  if (prox < today()) return { k:'bad', t:'Atrasado', prox:prox };
+  return { k:'ok', t:'Em dia', prox:prox };
+}
+function nivelRisco(p, i) {
+  var s = num(p) * num(i);
+  if (!s) return null;
+  if (s >= 15) return { n:'Crítico', k:'bad', lv:4, s:s };
+  if (s >= 10) return { n:'Alto', k:'warn', lv:3, s:s };
+  if (s >= 5) return { n:'Médio', k:'info', lv:2, s:s };
+  return { n:'Baixo', k:'ok', lv:1, s:s };
+}
+function riscoAberto(r) { return ['Encerrado','Controlado'].indexOf(r.Status) < 0; }
+
+/* alertas (sempre olhando os períodos atuais) */
+function alertas(L) {
+  var out = [];
+  ['Semanal','Mensal','Anual'].forEach(function (k) {
+    orcamentosDe(k, 0, L).itens.forEach(function (it) {
+      if (it.st === 'ok') return;
+      var quando = { Semanal:'da semana', Mensal:'do mês', Anual:'do ano' }[k];
+      out.push({ k:it.st, go:'orcamentos', html:'<strong>' + esc(it.b.Nome) + '</strong>: ' + pctf(it.p) + ' do limite ' + quando });
+    });
+  });
+  var rm = resumoMes(ymOf(today()), L);
+  if (rm.renda > 0 && rm.saldo < 0) out.push({ k:'bad', go:'inicio', html:'O mês está <strong>no vermelho</strong>: faltam ' + brl(-rm.saldo) });
+  (data.Controles || []).forEach(function (c) { if (statusControle(c).k === 'bad') out.push({ k:'warn', go:'casal', ico:'shield', html:'Controle <strong>' + esc(c.Controle) + '</strong> está atrasado' }); });
+  var crit = (data.Riscos || []).filter(function (r) { var n = nivelRisco(r.Probabilidade, r.Impacto); return r.Aplica === 'Sim' && riscoAberto(r) && n && n.lv === 4; }).length;
+  if (crit) out.push({ k:'bad', go:'casal', ico:'shield', html:crit + (crit > 1 ? ' riscos críticos' : ' risco crítico') + ' em aberto' });
+  out.sort(function (a, b) { return (a.k === 'bad' ? 0 : 1) - (b.k === 'bad' ? 0 : 1); });
+  return out;
+}
+
+/* simulação de dívida: meses para quitar e juros pagos */
+function quitacao(saldo, taxa, parcela) {
+  if (saldo <= 0) return { n:0, juros:0 };
+  if (parcela <= 0) return null;
+  if (taxa <= 0) return { n:Math.ceil(saldo / parcela), juros:0 };
+  if (saldo * taxa >= parcela) return { nunca:true };
+  var n = -Math.log(1 - taxa * saldo / parcela) / Math.log(1 + taxa);
+  return { n:Math.ceil(n), juros: Math.max(0, parcela * n - saldo) };
+}
+
+/* =================== gravação e sincronização =================== */
+function keyOf(sheet) { return KEYCOL[sheet] || 'ID'; }
+function applyLocal(op) {
+  var arr = data[op.sheet] = data[op.sheet] || [], k = keyOf(op.sheet);
+  var key = op.op === 'delete' ? op.key : op.row[k];
+  var i = arr.findIndex(function (r) { return String(r[k]) === String(key); });
+  if (op.op === 'delete') { if (i >= 0) arr.splice(i, 1); return; }
+  if (i >= 0) arr[i] = Object.assign({}, arr[i], op.row); else arr.push(Object.assign({}, op.row));
+}
+function salvar(sheet, row) { commit({ op:'upsert', sheet:sheet, row:row }); }
+function excluir(sheet, key) { commit({ op:'delete', sheet:sheet, key:key }); }
+function commit(op) {
+  applyLocal(op); lsSet(LS.data, data);
+  if (online()) { queue.push(op); lsSet(LS.queue, queue); flush(); }
+  render();
+}
+function online() { return !cfg.demo && !!cfg.url; }
+
+var flushing = false;
+function flush() {
+  if (!online() || flushing || !queue.length) { renderSync(); return Promise.resolve(); }
+  flushing = true; sync.state = 'sending'; renderSync();
+  var lote = queue.slice(0, 40);
+  return fetch(cfg.url, { method:'POST', headers:{ 'Content-Type':'text/plain;charset=utf-8' }, body: JSON.stringify({ token:cfg.token, action:'batch', ops:lote }) })
+    .then(function (r) { return r.json(); })
+    .then(function (res) {
+      if (!res.ok) throw new Error(res.error || 'Erro na planilha');
+      var falhas = res.results.filter(function (x) { return !x.ok; });
+      queue = queue.slice(lote.length); lsSet(LS.queue, queue);
+      sync.state = 'ok'; sync.msg = falhas.length ? falhas.length + ' alteração(ões) recusada(s): ' + falhas[0].error : '';
+      if (falhas.length) toast('A planilha recusou: ' + falhas[0].error);
+    })
+    .catch(function (e) { sync.state = 'offline'; sync.msg = String(e.message || e); })
+    .then(function () { flushing = false; renderSync(); if (queue.length && sync.state === 'ok') return flush(); });
+}
+function carregar(silencioso) {
+  if (!online()) { renderSync(); return Promise.resolve(); }
+  sync.state = 'loading'; renderSync();
+  return flush().then(function () {
+    return fetch(cfg.url + (cfg.url.indexOf('?') >= 0 ? '&' : '?') + 'action=all&token=' + encodeURIComponent(cfg.token));
+  }).then(function (r) { return r.json(); }).then(function (res) {
+    if (!res.ok) throw new Error(res.error || 'Erro na planilha');
+    data = res.data; SHEETS.forEach(function (s) { data[s] = data[s] || []; });
+    queue.forEach(applyLocal);
+    lsSet(LS.data, data); sync.state = 'ok'; sync.msg = ''; sync.at = new Date();
+    render(); if (!silencioso) toast('Dados atualizados da planilha');
+  }).catch(function (e) { sync.state = 'offline'; sync.msg = String(e.message || e); renderSync(); if (!silencioso) toast('Não consegui falar com a planilha: ' + sync.msg); });
+}
+function syncPill() {
+  if (cfg.demo || !cfg.url) return '<button class="pill sync" data-act="go" data-tab="config">Demonstração</button>';
+  var n = queue.length;
+  var t = { loading:'Carregando…', sending:'Enviando ' + n + '…', offline: n ? 'Sem conexão · ' + n + ' pendente' + (n > 1 ? 's' : '') : 'Sem conexão', ok:'Sincronizado', idle:'Conectado' }[sync.state] || 'Conectado';
+  return '<button class="pill sync" data-act="refresh" aria-label="Atualizar dados da planilha">' + ic('sync', 14) + esc(t) + '</button>';
+}
+function renderSync() { var el = document.getElementById('syncPill'); if (el) el.innerHTML = syncPill(); }
+
+/* =================== componentes =================== */
+function bar(p, st, ritmo, thin) {
+  return '<div class="bar' + (thin ? ' thin' : '') + '"><div class="trk"><div class="fill f-' + st + '" style="width:' + Math.min(100, Math.max(0, p * 100)).toFixed(1) + '%"></div></div>' +
+    (ritmo != null ? '<div class="tick" style="left:calc(' + (ritmo * 100).toFixed(1) + '% - 1px)"></div>' : '') + '</div>';
+}
+function header(title, sub, extra) {
+  return '<header class="hdr"><div class="hdr-row"><h1>' + esc(title) + '</h1>' + (extra || '') + '</div>' + (sub ? '<span class="sub">' + esc(sub) + '</span>' : '') + '</header>';
+}
+function lancItem(l) {
+  var sinal = l.tipo === 'Entrada' ? '+ ' : (l.tipo === 'Aporte' ? '→ ' : '− ');
+  var cls = l.tipo === 'Entrada' ? ' t-ok' : (l.tipo === 'Aporte' ? ' t-brand' : '');
+  return '<button class="li" data-act="editLanc" data-id="' + esc(l.id) + '"><span class="ico ' + (l.tipo === 'Entrada' ? 'ok' : l.tipo === 'Aporte' ? 'brand' : 'mute') + '">' + ic(catIcon(l.cat, l.macro), 18) + '</span>' +
+    '<span class="grow"><span class="t">' + esc(l.desc || l.cat) + '</span><span class="s">' + esc(l.cat) + ' · ' + esc(l.pessoa) + (l.tipo !== 'Entrada' && l.rateio === 'Pessoal' ? ' (pessoal)' : '') + (l.forma ? ' · ' + esc(l.forma) : '') + '</span></span>' +
+    '<span class="amt' + cls + '">' + sinal + brl(l.v) + '</span></button>';
+}
+
+/* =================== telas =================== */
+function vInicio() {
+  var L = lancs(), r = resumoMes(ui.ym, L), parc = parcelasDividas();
+  var media = despesaMedia(L), metaM = num(conf('reserva_meta_meses', 6)), saldoRes = num(conf('reserva_saldo', 0));
+  var cobertos = media ? saldoRes / media : 0;
+  var mensal = orcamentosDe('Mensal', 0, L).itens.filter(function (i) { return i.b.Escopo === 'Total'; })[0];
+  var al = alertas(L), ac = acerto(ui.ym, L), ult = L.filter(function (l) { return ymOf(l.d) === ui.ym; }).slice(0, 5);
+  var h = '<header class="hdr tall"><div class="hdr-row"><span class="brandname">Finanças da Casa</span><span id="syncPill">' + syncPill() + '</span></div>' +
+    '<div class="hdr-row"><div class="monthnav"><button class="iconbtn" data-act="ym" data-n="-1" aria-label="Mês anterior">' + ic('left', 20) + '</button><span>' + monthLabel(ui.ym) + '</span><button class="iconbtn" data-act="ym" data-n="1" aria-label="Próximo mês">' + ic('right', 20) + '</button></div>' +
+    '<button class="iconbtn" data-act="go" data-tab="config" aria-label="Configurações">' + ic('gear', 20) + '</button></div>' +
+    '<div><div class="sub">Saldo do mês (sobra depois dos aportes)</div><div class="big">' + brl(r.saldo) + '</div></div>' +
+    '<div class="trio"><div><span>Renda</span><b>' + brl0(r.renda) + '</b></div><div><span>Despesas</span><b>' + brl0(r.despesa) + '</b></div><div><span>Aportes</span><b>' + brl0(r.aporte) + '</b></div></div></header>';
+  h += '<div class="main lift">';
+  h += '<section class="card"><div class="kpis">' +
+    '<div class="kpi"><span class="lab">Taxa de poupança</span><span class="val">' + pctf(r.poup, 1) + '</span><span class="tiny muted">aportes ÷ renda do mês</span></div>' +
+    '<div class="kpi"><span class="lab">Renda com dívidas</span><span class="val">' + (r.renda ? pctf(parc / r.renda, 1) : '—') + '</span><span class="tiny muted">' + brl0(parc) + ' em parcelas</span></div>' +
+    '<div class="kpi"><span class="lab">Reserva de emergência</span><span class="val">' + cobertos.toLocaleString('pt-BR', { maximumFractionDigits:1 }) + ' <small>de ' + metaM + ' meses</small></span>' + bar(metaM ? cobertos / metaM : 0, cobertos >= metaM ? 'ok' : (cobertos >= metaM / 2 ? 'warn' : 'bad'), null, true) + '</div>' +
+    '<div class="kpi"><span class="lab">Despesas × planejado</span>' + (mensal ? '<span class="val t-' + mensal.st + '">' + pctf(mensal.p) + '</span>' + bar(mensal.p, mensal.st, periodo('Mensal', 0).ritmo, true) : '<span class="val">—</span><span class="tiny muted">crie um limite "Total"</span>') + '</div>' +
+    '</div></section>';
+  h += '<section class="card"><div class="row"><h2>Alertas de agora</h2><span class="pill ' + (al.length ? (al[0].k === 'bad' ? 'bad' : 'warn') : 'ok') + '">' + (al.length || 'Tudo certo') + '</span></div>';
+  if (al.length) h += '<div class="list">' + al.slice(0, 5).map(function (a) {
+    return '<button class="li" data-act="go" data-tab="' + a.go + '"><span class="ico ' + a.k + '">' + ic(a.ico || 'alert', 18) + '</span><span class="grow"><span class="small">' + a.html + '</span></span><span class="chev">' + ic('right', 18) + '</span></button>';
+  }).join('') + '</div>';
+  else h += '<p class="small muted" style="margin:0">Nenhum limite acima de 90% e nenhum controle atrasado.</p>';
+  h += '</section>';
+  // acerto
+  var p0 = ac.total ? ac.pago[ac.ps[0]] / ac.total : .5;
+  h += '<section class="card"><div class="row base"><h2>Acerto do mês</h2><span class="tiny muted">' + (ac.regra === 'proporcional' ? 'proporcional à renda · ' + pctf(ac.share0) + ' / ' + pctf(1 - ac.share0) : 'meio a meio') + '</span></div>';
+  if (ac.total) {
+    h += '<div class="split" role="img" aria-label="Divisão do que cada um pagou"><div style="width:' + (p0 * 100).toFixed(1) + '%; background:var(--brand-text)"></div><div style="flex:1; background:var(--warn)"></div></div>' +
+      '<div class="row small"><span><strong>' + esc(ac.ps[0]) + '</strong> pagou ' + brl0(ac.pago[ac.ps[0]]) + '</span><span><strong>' + esc(ac.ps[1]) + '</strong> pagou ' + brl0(ac.pago[ac.ps[1]]) + '</span></div>' +
+      '<div class="callout brand"><span class="t-brand">' + ic('swap', 20) + '</span><span>' + (ac.valor < 1 ? 'As contas da casa estão equilibradas.' : '<strong>' + esc(ac.de) + '</strong> transfere <strong>' + brl(ac.valor) + '</strong> para ' + esc(ac.para) + ' e o mês fica equilibrado.') + '</span></div>';
+  } else h += '<p class="small muted" style="margin:0">Sem despesas da casa lançadas neste mês.</p>';
+  h += '</section>';
+  // últimos
+  h += '<section class="card"><div class="row"><h2>Lançamentos de ' + MESES[+ui.ym.split('-')[1] - 1] + '</h2><button class="linkbtn" data-act="go" data-tab="lista">Ver todos</button></div>';
+  h += ult.length ? '<div class="list">' + ult.map(lancItem).join('') + '</div>' : '<p class="small muted" style="margin:0">Nenhum lançamento neste mês. Toque no + para lançar.</p>';
+  h += '</section></div>';
+  return h;
+}
+
+function vOrcamentos() {
+  var L = lancs();
+  var h = header('Orçamentos', 'Limite de cada categoria e o ritmo de consumo até hoje') + '<div class="main">';
+  h += '<div class="legend"><div class="bar"><div class="trk"></div><div class="tick" style="left:24px"></div></div><span>O traço mostra onde o gasto deveria estar hoje. Barra além do traço: ritmo acima do combinado.</span></div>';
+  ['Semanal','Mensal','Anual'].forEach(function (k) {
+    var o = orcamentosDe(k, ui.off[k], L);
+    h += '<section class="card flush"><div class="sec-h"><button class="iconbtn" data-act="per" data-k="' + k + '" data-n="-1" aria-label="Período anterior">' + ic('left', 20) + '</button><div class="ttl"><b>' + esc(o.per.label) + '</b><span>' + esc(o.per.sub) + '</span></div><button class="iconbtn" data-act="per" data-k="' + k + '" data-n="1" aria-label="Próximo período">' + ic('right', 20) + '</button></div>';
+    if (!o.itens.length) h += '<div class="empty">Nenhum limite ' + { Semanal:'semanal', Mensal:'mensal', Anual:'anual' }[k] + ' ainda.</div>';
+    o.itens.forEach(function (it) {
+      var over = it.gasto > it.lim, adiant = it.p > o.per.ritmo + 0.001 && ui.off[k] === 0;
+      h += '<button class="bud" data-act="editOrc" data-id="' + esc(it.b.ID) + '"><span class="ico lg ' + it.st + '">' + ic(it.icon, 22) + '</span><span class="grow">' +
+        '<span class="row base"><span class="name">' + esc(it.b.Nome) + '</span><span class="pct t-' + it.st + '">' + pctf(it.p) + '</span></span>' + bar(it.p, it.st, o.per.ritmo) +
+        '<span class="row small muted"><span>Gasto <strong class="t-' + it.st + '">' + brl(it.gasto) + '</strong></span><span>Limite ' + brl(it.lim) + '</span></span>' +
+        '<span class="row small"><span style="white-space:nowrap">' + (over ? 'Passou' : 'Resta') + ' <strong>' + brl(Math.abs(it.lim - it.gasto)) + '</strong></span><span class="muted" style="white-space:nowrap">' + (over ? 'acima do limite' : (it.p >= 0.995 ? 'limite atingido' : (ui.off[k] !== 0 ? '' : adiant ? 'acima do ritmo' : 'dentro do ritmo'))) + '</span></span></span></button>';
+    });
+    h += '</section>';
+  });
+  // planejado x realizado por macro
+  var mt = macroTipo(), cm = catMacro(), per = periodo('Mensal', ui.off.Mensal), plan = {}, real = {};
+  (data.Orcamentos || []).forEach(function (b) {
+    if (b.Periodicidade !== 'Mensal' || String(b.Ativo || 'Sim') === 'Não') return;
+    var m = b.Escopo === 'Categoria' ? cm[b.Alvo] : (b.Escopo === 'Macro' ? b.Alvo : null);
+    if (m) plan[m] = (plan[m] || 0) + num(b.Limite);
+  });
+  L.forEach(function (l) { if (inRange(l.d, per.s, per.e)) real[l.macro] = (real[l.macro] || 0) + l.v; });
+  h += '<section class="card"><div class="row base"><h2>Planejado × realizado por macro</h2><span class="tiny muted">' + esc(per.label) + '</span></div><div class="list">';
+  macrosOrdenadas().forEach(function (m) {
+    var pl = plan[m] || 0, re = real[m] || 0, t = mt[m];
+    if (!pl && !re) return;
+    var p = pl ? re / pl : (re ? 2 : 0);
+    var st = t === 'Despesa' ? status(p) : (p >= 1 ? 'ok' : 'warn');
+    h += '<div class="li" style="flex-direction:column; align-items:stretch; gap:6px"><div class="row small"><strong>' + esc(m) + '</strong><span class="muted" style="white-space:nowrap">' + brl0(re) + (pl ? ' de ' + brl0(pl) : ' · sem plano') + '</span></div>' + bar(Math.min(p, 1), st, null, true) + '</div>';
+  });
+  h += '</div></section>';
+  h += '<button class="btn dashed wide" data-act="novoOrc">+ Novo limite (semanal, mensal ou anual)</button></div>';
+  return h;
+}
+
+function vLista() {
+  var L = lancs().filter(function (l) { return ymOf(l.d) === ui.ym; });
+  var h = '<header class="hdr"><div class="hdr-row"><button class="iconbtn" data-act="go" data-tab="inicio" aria-label="Voltar">' + ic('left', 22) + '</button><h1 style="flex:1">Lançamentos</h1>' +
+    '<div class="monthnav"><button class="iconbtn" data-act="ym" data-n="-1" aria-label="Mês anterior">' + ic('left', 18) + '</button><span class="small">' + MES3[+ui.ym.split('-')[1] - 1] + '/' + ui.ym.slice(2, 4) + '</span><button class="iconbtn" data-act="ym" data-n="1" aria-label="Próximo mês">' + ic('right', 18) + '</button></div></div></header>';
+  h += '<div class="main"><div class="fld"><label for="busca">Buscar no mês</label><input id="busca" class="search" data-input="busca" placeholder="Descrição, categoria ou pessoa" value="' + esc(ui.q) + '"></div>';
+  h += '<section class="card" id="listaBox">' + listaHtml(L) + '</section></div>';
+  return h;
+}
+function listaHtml(L) {
+  var q = ui.q.trim().toLowerCase();
+  var F = q ? L.filter(function (l) { return (l.desc + ' ' + l.cat + ' ' + l.pessoa + ' ' + l.macro).toLowerCase().indexOf(q) >= 0; }) : L;
+  if (!F.length) return '<p class="small muted" style="margin:0">Nada encontrado neste mês.</p>';
+  var out = '', dia = '', tot = { e:0, s:0 };
+  F.forEach(function (l) {
+    var k = ymd(l.d);
+    if (k !== dia) { dia = k; out += '<div class="dayhdr">' + dm(l.d) + '</div>'; }
+    out += lancItem(l);
+    if (l.tipo === 'Entrada') tot.e += l.v; else tot.s += l.v;
+  });
+  return '<div class="row small"><span class="muted">' + F.length + ' lançamentos</span><span><span class="t-ok">+' + brl0(tot.e) + '</span> · −' + brl0(tot.s) + '</span></div><div class="list">' + out + '</div>';
+}
+
+function vMetas() {
+  var hoje = today(), totMes = 0;
+  var planos = (data.Planos || []).filter(function (p) { return ['Concluído','Cancelado'].indexOf(p.Status) < 0; });
+  var cards = planos.map(function (p) {
+    var meta = num(p.ValorNecessario), guard = num(p.JaGuardado), falta = Math.max(0, meta - guard), alvo = parseD(p.DataAlvo);
+    var hz = String(p.Horizonte || '').toLowerCase(), chip = hz.indexOf('curto') >= 0 ? 'ok' : (hz.indexOf('médio') >= 0 || hz.indexOf('medio') >= 0 ? 'warn' : 'info');
+    var h = '<button class="card" style="text-align:left" data-act="editPlano" data-id="' + esc(p.ID) + '"><span class="row" style="align-items:flex-start"><span style="display:flex;flex-direction:column;gap:4px;min-width:0"><span style="font-size:16px;font-weight:700">' + esc(p.Objetivo) + '</span><span class="pill ' + chip + '" style="align-self:flex-start">' + esc(p.Horizonte || 'Sem horizonte') + '</span></span>';
+    if (!meta) return h + '<span class="pill mute">' + esc(p.Status || 'A definir') + '</span></span><span class="small muted">Definam o valor e a data-alvo para o app calcular quanto guardar por mês.</span></button>';
+    var pc = guard / meta;
+    h += '<span style="font-size:20px;font-weight:800" class="t-brand">' + pctf(Math.min(pc, 1)) + '</span></span>' + bar(pc, 'brand') +
+      '<span class="row small muted"><span>Guardado <strong style="color:var(--fg)">' + brl0(guard) + '</strong></span><span>Meta ' + brl0(meta) + '</span></span>';
+    if (falta <= 0) h += '<span class="callout brand">Meta atingida.</span>';
+    else if (alvo) {
+      var meses = Math.max(1, monthsBetween(hoje, alvo)), m = falta / meses; totMes += m;
+      h += '<span class="callout brand"><span>Guardar <strong>' + brl0(m) + '/mês</strong> até ' + MES3[alvo.getMonth()] + '/' + alvo.getFullYear() + ' (' + meses + (meses > 1 ? ' meses' : ' mês') + ')</span></span>';
+    } else h += '<span class="small muted">Falta ' + brl0(falta) + '. Definam a data-alvo.</span>';
+    return h + '</button>';
+  });
+  var h = header('Metas e dívidas', 'Quanto guardar por mês e em que ordem quitar') + '<div class="main">';
+  h += '<div class="row base"><h2 style="font-size:17px;font-weight:800">Planos</h2><span class="small muted">guardar <strong style="color:var(--fg)">' + brl0(totMes) + '/mês</strong> no total</span></div>' + cards.join('');
+  h += '<button class="btn dashed wide" data-act="novoPlano">+ Novo plano</button>';
+  // dívidas
+  var ds = (data.Dividas || []).slice(), saldoT = 0, parcT = 0;
+  ds.forEach(function (d) { saldoT += num(d.SaldoDevedor); parcT += num(d.Parcela); });
+  ds.sort(ui.debtOrder === 'juros' ? function (a, b) { return juros(b.JurosMes) - juros(a.JurosMes); } : function (a, b) { return num(a.SaldoDevedor) - num(b.SaldoDevedor); });
+  var renda = resumoMes(ymOf(hoje), lancs()).renda;
+  h += '<div class="row base" style="margin-top:8px"><h2 style="font-size:17px;font-weight:800">Dívidas</h2></div>';
+  h += '<div class="seg" role="group" aria-label="Ordem de quitação"><button data-act="debtOrder" data-v="juros" aria-pressed="' + (ui.debtOrder === 'juros') + '">Juros mais altos</button><button data-act="debtOrder" data-v="saldo" aria-pressed="' + (ui.debtOrder === 'saldo') + '">Menor saldo</button></div>';
+  h += '<section class="card"><div class="kpis"><div class="kpi"><span class="lab">Saldo devedor total</span><span class="val">' + brl0(saldoT) + '</span></div><div class="kpi"><span class="lab">Parcelas por mês</span><span class="val">' + brl0(parcT) + (renda ? ' <small>· ' + pctf(parcT / renda, 1) + '</small>' : '') + '</span></div></div></section>';
+  ds.forEach(function (d, i) {
+    var saldo = num(d.SaldoDevedor), tx = juros(d.JurosMes), parc = num(d.Parcela), q = quitacao(saldo, tx, parc);
+    var fim = q && q.n != null ? addDays(new Date(hoje.getFullYear(), hoje.getMonth() + q.n, 1), 0) : null;
+    h += '<article class="card"><div style="display:flex;gap:12px"><span class="ico ' + (i === 0 ? 'bad' : 'mute') + '" style="font-weight:800">' + (i + 1) + '</span><div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:6px">' +
+      '<div class="row base"><strong style="font-size:16px">' + esc(d.Divida) + '</strong><span class="small" style="font-weight:800">' + (tx ? pctf(tx, 2).replace('%', '% a.m.') : 'sem juros') + '</span></div>' +
+      '<span class="small muted">' + (saldo ? 'Saldo ' + brl0(saldo) + ' · ' + brl0(parc) + '/mês' + (q && q.n != null ? ' · ' + q.n + ' parcelas · termina ' + MES3[fim.getMonth()] + '/' + fim.getFullYear() : '') : 'Preencham saldo, parcela e juros para simular.') + '</span>';
+    if (q && q.nunca) h += '<div class="callout bad">A parcela não cobre os juros do mês. Essa dívida só cresce.</div>';
+    if (saldo && parc) {
+      h += '<label class="row small" style="gap:8px"><span>Simular pagamento extra por mês</span><input class="inp" style="max-width:120px;height:40px" inputmode="decimal" data-input="sim" data-id="' + esc(d.ID) + '" value="' + esc(ui.sim[d.ID] || '') + '" placeholder="R$ 0"></label><div id="sim-' + esc(d.ID) + '">' + simHtml(d) + '</div>';
+    }
+    h += '<div class="row"><span></span><button class="linkbtn" data-act="editDivida" data-id="' + esc(d.ID) + '">Editar dívida</button></div></div></div></article>';
+  });
+  h += '<button class="btn dashed wide" data-act="novaDivida">+ Nova dívida</button></div>';
+  return h;
+}
+function simHtml(d) {
+  var extra = num(ui.sim[d.ID]); if (!extra) return '';
+  var saldo = num(d.SaldoDevedor), tx = juros(d.JurosMes), parc = num(d.Parcela);
+  var a = quitacao(saldo, tx, parc), b = quitacao(saldo, tx, parc + extra);
+  if (!b || b.nunca) return '';
+  var antes = a && a.n != null ? a.n - b.n : null, econ = a && a.n != null ? a.juros - b.juros : null;
+  return '<div class="callout brand"><span>Com <strong>+' + brl0(extra) + '/mês</strong>, quita em ' + b.n + ' meses' + (antes != null ? ' (' + antes + ' antes)' : '') + (econ != null ? ' e economiza cerca de <strong>' + brl0(econ) + '</strong> em juros' : '') + '.</span></div>';
+}
+
+function proxReuniao() {
+  var t = today();
+  for (var i = 0; i < 3; i++) {
+    var d = new Date(t.getFullYear(), t.getMonth() + i, 1);
+    while (d.getDay() !== 6) d = addDays(d, 1);
+    if (d >= t) return d;
+  }
+  return t;
+}
+function vCasal() {
+  var h = header('Casal', 'Reuniões, riscos, controles e combinados') + '<div class="main">';
+  var reun = (data.Reunioes || []).slice().sort(function (a, b) { return (parseD(b.Data) || 0) - (parseD(a.Data) || 0); });
+  var pr = proxReuniao();
+  h += '<section class="card"><div class="row"><h2>Próxima reunião</h2><span class="pill brand">sáb, ' + dm(pr) + '</span></div>' +
+    '<ol class="small" style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:3px"><li>Início do mês e alertas</li><li>Planejado × realizado</li><li>Planos e dívidas</li><li>Um combinado em aberto</li></ol>' +
+    (reun[0] ? '<span class="tiny muted">Última: ' + dmy(parseD(reun[0].Data)) + (reun[0].Decisoes ? ' · ' + esc(String(reun[0].Decisoes).slice(0, 80)) : '') + '</span>' : '<span class="tiny muted">Nenhuma reunião registrada ainda.</span>') +
+    '<button class="btn" data-act="novaReuniao">Registrar reunião</button></section>';
+  // riscos
+  var rs = data.Riscos || [];
+  var aplic = rs.filter(function (r) { return r.Aplica === 'Sim'; });
+  var cells = [];
+  for (var I = 5; I >= 1; I--) for (var Pp = 1; Pp <= 5; Pp++) {
+    var n = aplic.filter(function (r) { return num(r.Probabilidade) === Pp && num(r.Impacto) === I && riscoAberto(r); }).length;
+    cells.push('<div class="lv' + nivelRisco(Pp, I).lv + (n ? ' has' : '') + '">' + (n || '') + '</div>');
+  }
+  var semNota = aplic.filter(function (r) { return !nivelRisco(r.Probabilidade, r.Impacto); }).length;
+  var naoAval = rs.filter(function (r) { return r.Aplica !== 'Sim' && r.Aplica !== 'Não'; }).length;
+  h += '<section class="card"><div class="row base"><h2>Matriz de riscos</h2><span class="tiny muted">' + aplic.length + ' se aplicam · ' + naoAval + ' a avaliar</span></div>' +
+    '<div style="display:flex;gap:8px"><span class="axis-y">Impacto</span><div style="flex:1;display:flex;flex-direction:column;gap:6px"><div class="matrix" role="img" aria-label="Matriz 5 por 5 de probabilidade por impacto">' + cells.join('') + '</div><span class="tiny muted" style="text-align:center;font-weight:600">Probabilidade</span></div></div>' +
+    (semNota ? '<div class="callout warn">' + semNota + (semNota > 1 ? ' riscos marcados sem nota.' : ' risco marcado sem nota.') + ' Toquem no risco para dar a nota de 1 a 5.</div>' : '');
+  h += '<div class="seg" role="group" aria-label="Filtro de riscos"><button data-act="riskF" data-v="aplica" aria-pressed="' + (ui.riskFilter === 'aplica') + '">Se aplicam</button><button data-act="riskF" data-v="avaliar" aria-pressed="' + (ui.riskFilter === 'avaliar') + '">A avaliar</button><button data-act="riskF" data-v="todos" aria-pressed="' + (ui.riskFilter === 'todos') + '">Todos</button></div>';
+  var lista = rs.filter(function (r) { return ui.riskFilter === 'todos' || (ui.riskFilter === 'aplica' ? r.Aplica === 'Sim' : (r.Aplica !== 'Sim' && r.Aplica !== 'Não')); })
+    .map(function (r) { return { r:r, n:nivelRisco(r.Probabilidade, r.Impacto) }; })
+    .sort(function (a, b) { return (b.n ? b.n.s : 0) - (a.n ? a.n.s : 0); });
+  h += '<div class="list">' + (lista.length ? lista.map(function (x) {
+    return '<button class="li" data-act="editRisco" data-id="' + esc(x.r.ID) + '"><span class="grow"><span class="t">' + esc(x.r.Risco) + '</span><span class="s">' + esc(x.r.Categoria || '') + (x.r.Aplica === 'Não' ? ' · não se aplica' : '') + '</span></span>' +
+      (x.n ? '<span class="tiny muted">' + num(x.r.Probabilidade) + '×' + num(x.r.Impacto) + '</span><span class="pill ' + x.n.k + '">' + x.n.n + '</span>' : '<span class="pill mute">Sem nota</span>') + '</button>';
+  }).join('') : '<p class="small muted">Nenhum risco neste filtro.</p>') + '</div></section>';
+  // controles
+  var cs = (data.Controles || []).map(function (c) { return { c:c, s:statusControle(c) }; });
+  var cnt = { ok:0, bad:0, mute:0 }; cs.forEach(function (x) { if (x.c.Frequencia !== 'Contínuo') cnt[x.s.k]++; });
+  cs.sort(function (a, b) { var o = { bad:0, mute:1, ok:2 }; return o[a.s.k] - o[b.s.k]; });
+  h += '<section class="card"><h2>Controles</h2><div class="stat3"><div style="background:var(--ok-soft)"><b class="t-ok">' + cnt.ok + '</b><span class="tiny t-ok">em dia</span></div><div style="background:var(--bad-soft)"><b class="t-bad">' + cnt.bad + '</b><span class="tiny t-bad">atrasados</span></div><div style="background:var(--surface-2)"><b>' + cnt.mute + '</b><span class="tiny muted">sem registro</span></div></div><div class="list">';
+  h += cs.map(function (x) {
+    var c = x.c, ult = parseD(c.UltimaVerificacao);
+    return '<div class="li"><span class="grow"><span class="t">' + esc(c.Controle) + '</span><span class="s">' + esc(c.Frequencia || '') + (ult ? ' · última em ' + dmy(ult) : '') + (x.s.prox && x.s.k === 'ok' ? ' · próxima ' + dm(x.s.prox) : '') + '</span></span>' +
+      (c.Frequencia === 'Contínuo' ? '<span class="pill mute">Contínuo</span>' : (x.s.k === 'ok' ? '<span class="pill ok">Em dia</span>' : '<button class="btn ghost sm" data-act="feito" data-id="' + esc(c.ID) + '">Feito hoje</button>')) + '</div>';
+  }).join('') + '</div></section>';
+  // combinados
+  var cb = data.Combinados || [], feitos = cb.filter(function (c) { return String(c.Decisao || '').trim(); }).length;
+  var prox = cb.filter(function (c) { return !String(c.Decisao || '').trim(); })[0];
+  h += '<section class="card"><div class="row base"><h2>Combinados</h2><span class="small muted"><strong style="color:var(--fg)">' + feitos + '</strong> de ' + cb.length + ' respondidos</span></div>' + bar(cb.length ? feitos / cb.length : 0, 'brand', null, true);
+  if (prox) h += '<div style="background:var(--surface-2);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:4px"><span class="tiny muted" style="font-weight:600">Próxima pergunta · ' + esc(prox.Tema) + '</span><span style="font-size:15px;font-weight:700">' + esc(prox.Pergunta) + '</span></div><button class="btn ghost" data-act="editComb" data-id="' + esc(prox.ID) + '">Responder juntos</button>';
+  var temas = {}; cb.forEach(function (c) { (temas[c.Tema] = temas[c.Tema] || []).push(c); });
+  h += '<details><summary class="small" style="font-weight:700;cursor:pointer;min-height:36px;display:flex;align-items:center">Ver todos os combinados</summary>';
+  Object.keys(temas).forEach(function (t) {
+    h += '<div class="dayhdr">' + esc(t) + '</div><div class="list">' + temas[t].map(function (c) {
+      var ok = String(c.Decisao || '').trim();
+      return '<button class="li" data-act="editComb" data-id="' + esc(c.ID) + '"><span class="ico ' + (ok ? 'ok' : 'mute') + '">' + ic(ok ? 'check' : 'alert', 16) + '</span><span class="grow"><span class="t">' + esc(c.Pergunta) + '</span>' + (ok ? '<span class="s">' + esc(String(c.Decisao).slice(0, 90)) + '</span>' : '') + '</span></button>';
+    }).join('') + '</div>';
+  });
+  h += '</details></section>';
+  if (reun.length) {
+    h += '<section class="card"><h2>Reuniões registradas</h2><div class="list">' + reun.map(function (r) {
+      return '<button class="li" data-act="editReuniao" data-id="' + esc(r.ID) + '"><span class="grow"><span class="t">' + dmy(parseD(r.Data)) + '</span><span class="s">' + esc(String(r.Decisoes || r.Pontos || '').slice(0, 100)) + '</span></span><span class="chev">' + ic('right', 18) + '</span></button>';
+    }).join('') + '</div></section>';
+  }
+  return h + '</div>';
+}
+
+function vConfig() {
+  var ps = pessoas();
+  var h = '<header class="hdr"><div class="hdr-row"><button class="iconbtn" data-act="go" data-tab="inicio" aria-label="Voltar">' + ic('left', 22) + '</button><h1 style="flex:1">Configurações</h1></div></header><div class="main">';
+  h += '<section class="card"><h2>Conexão com a planilha</h2>' +
+    '<p class="small muted" style="margin:0">Cole a URL do Apps Script (termina em /exec) e o token gerado pela função configurar.</p>' +
+    '<div class="fld"><label for="cfgUrl">URL do Apps Script</label><input id="cfgUrl" class="inp" value="' + esc(cfg.url) + '" placeholder="https://script.google.com/macros/s/…/exec" autocomplete="off"></div>' +
+    '<div class="fld"><label for="cfgToken">Token</label><input id="cfgToken" class="inp" value="' + esc(cfg.token) + '" autocomplete="off"></div>' +
+    '<div class="fld"><label for="cfgAutor">Quem usa este celular</label><select id="cfgAutor" class="inp"><option value="">Escolher</option>' + ps.map(function (p) { return '<option' + (cfg.autor === p ? ' selected' : '') + '>' + esc(p) + '</option>'; }).join('') + '</select></div>' +
+    '<button class="btn" data-act="conectar">Conectar e carregar dados</button>' +
+    (cfg.url && !cfg.demo ? '<div class="row small"><span class="muted">Estado: ' + esc({ ok:'sincronizado', offline:'sem conexão', loading:'carregando', sending:'enviando', idle:'conectado' }[sync.state] || sync.state) + (queue.length ? ' · ' + queue.length + ' pendente(s)' : '') + '</span><button class="linkbtn" data-act="refresh">Atualizar agora</button></div>' : '') +
+    (sync.msg ? '<div class="callout warn">' + esc(sync.msg) + '</div>' : '') + '</section>';
+  h += '<section class="card"><h2>Regras do casal</h2><p class="small muted" style="margin:0">Ficam na aba Config da planilha.</p><div class="list">' +
+    (data.Config || []).map(function (c) { return '<button class="li" data-act="editConfig" data-id="' + esc(c.Chave) + '"><span class="grow"><span class="t">' + esc(c.Descricao || c.Chave) + '</span><span class="s">' + esc(c.Valor) + '</span></span><span class="chev">' + ic('right', 18) + '</span></button>'; }).join('') + '</div></section>';
+  h += '<section class="card"><h2>Modo demonstração</h2><p class="small muted" style="margin:0">' + (cfg.demo ? 'Ligado: os dados ficam só neste celular e incluem lançamentos de exemplo.' : 'Desligado: o app usa a planilha.') + '</p>' +
+    '<button class="btn ghost" data-act="demo">' + (cfg.demo ? 'Recarregar dados de exemplo' : 'Voltar ao modo demonstração') + '</button></section>';
+  return h + '</div>';
+}
+
+/* =================== formulários =================== */
+var form = null; // { title, fields, values, onSave, onDelete }
+function abrirForm(f) { form = f; renderSheet(); }
+function fecharSheet() { form = null; draft = null; document.getElementById('sheetRoot').innerHTML = ''; }
+function campo(f, v) {
+  var id = 'f_' + f.name, val = v == null ? '' : v;
+  if (f.type === 'seg') return '<div class="fld"><span class="lab">' + esc(f.label) + '</span><div class="seg" role="group" aria-label="' + esc(f.label) + '">' + f.options.map(function (o) { return '<button type="button" data-act="fseg" data-f="' + f.name + '" data-v="' + esc(o) + '" aria-pressed="' + (String(val) === String(o)) + '">' + esc(o) + '</button>'; }).join('') + '</div><input type="hidden" name="' + f.name + '" value="' + esc(val) + '"></div>';
+  var inner;
+  if (f.type === 'select') inner = '<select id="' + id + '" name="' + f.name + '" class="inp">' + (f.blank ? '<option value=""></option>' : '') + f.options.map(function (o) { var ov = typeof o === 'object' ? o : { v:o, t:o }; return '<option value="' + esc(ov.v) + '"' + (String(ov.v) === String(val) ? ' selected' : '') + '>' + esc(ov.t) + '</option>'; }).join('') + '</select>';
+  else if (f.type === 'textarea') inner = '<textarea id="' + id + '" name="' + f.name + '" class="inp">' + esc(val) + '</textarea>';
+  else if (f.type === 'date') inner = '<input type="date" id="' + id + '" name="' + f.name + '" class="inp" value="' + esc(String(val).slice(0, 10)) + '">';
+  else if (f.type === 'money' || f.type === 'number' || f.type === 'percent') inner = '<input id="' + id + '" name="' + f.name + '" class="inp" inputmode="decimal" value="' + esc(val === '' ? '' : (f.type === 'percent' ? (juros(val) * 100).toLocaleString('pt-BR', { maximumFractionDigits:3 }) : num(val).toLocaleString('pt-BR', { maximumFractionDigits:2 }))) + '"' + (f.ph ? ' placeholder="' + esc(f.ph) + '"' : '') + '>';
+  else inner = '<input id="' + id + '" name="' + f.name + '" class="inp" value="' + esc(val) + '"' + (f.ph ? ' placeholder="' + esc(f.ph) + '"' : '') + '>';
+  return '<div class="fld"><label for="' + id + '">' + esc(f.label) + '</label>' + inner + (f.help ? '<span class="tiny muted">' + esc(f.help) + '</span>' : '') + '</div>';
+}
+function renderSheet() {
+  var root = document.getElementById('sheetRoot');
+  if (draft) { root.innerHTML = lancSheet(); return; }
+  if (!form) { root.innerHTML = ''; return; }
+  var body = '';
+  for (var i = 0; i < form.fields.length; i++) {
+    var f = form.fields[i];
+    if (f.pair) { body += '<div class="grid2">' + campo(f, form.values[f.name]) + campo(form.fields[i + 1], form.values[form.fields[i + 1].name]) + '</div>'; i++; }
+    else body += campo(f, form.values[f.name]);
+  }
+  root.innerHTML = '<div class="scrim" data-act="scrim"><form class="sheet" id="sheetForm" role="dialog" aria-modal="true" aria-label="' + esc(form.title) + '"><div class="grab"></div><div class="sheet-h"><h2>' + esc(form.title) + '</h2><button type="button" class="iconbtn" data-act="close" aria-label="Fechar">' + ic('x', 22) + '</button></div>' +
+    body + '<button class="btn" type="submit">Salvar</button>' + (form.onDelete ? '<button class="btn danger" type="button" data-act="fdel">' + (form.confirmDel ? 'Toque de novo para excluir' : 'Excluir') + '</button>' : '') + '</form></div>';
+}
+function lerForm() {
+  var out = {}, el = document.getElementById('sheetForm');
+  form.fields.forEach(function (f) {
+    var inp = el.querySelector('[name="' + f.name + '"]'); if (!inp) return;
+    var v = inp.value;
+    if (f.type === 'money' || f.type === 'number') v = v === '' ? '' : num(v);
+    if (f.type === 'percent') v = v === '' ? '' : num(v) / 100;
+    if (f.num) v = v === '' ? '' : num(v);
+    out[f.name] = v;
+  });
+  return out;
+}
+
+/* ---- lançamento (folha própria) ---- */
+var draft = null;
+function abrirLanc(id) {
+  var l = id ? (data.Lancamentos || []).filter(function (x) { return x.ID === id; })[0] : null;
+  var mt = macroTipo(), cm = catMacro();
+  draft = l ? { id:l.ID, tipo: mt[cm[l.Categoria]] === 'Entrada' ? 'Entrada' : (mt[cm[l.Categoria]] === 'Aporte' ? 'Aporte' : 'Saída'), valor: num(l.Valor).toLocaleString('pt-BR', { minimumFractionDigits:2 }), cat:l.Categoria, data:String(l.Data).slice(0, 10), desc:l.Descricao || '', pessoa:l.Pessoa || pessoas()[0], rateio:l.Rateio || 'Casa', forma:l.FormaPagamento || '' }
+    : { tipo:'Saída', valor:'', cat:'', data:ymd(today()), desc:'', pessoa: cfg.autor || pessoas()[0], rateio:'Casa', forma:'Pix', del:false };
+  form = null; renderSheet();
+  setTimeout(function () { var v = document.getElementById('lValor'); if (v && !id) v.focus(); }, 60);
+}
+function catsDoTipo(tipo) {
+  var mt = macroTipo(), alvo = tipo === 'Saída' ? 'Despesa' : tipo;
+  return (data.Categorias || []).filter(function (c) { return mt[c.Macro] === alvo && String(c.Ativa || 'Sim') !== 'Não'; });
+}
+function maisUsadas(tipo) {
+  var cont = {}, ok = {}; catsDoTipo(tipo).forEach(function (c) { ok[c.Categoria] = 1; });
+  lancs().forEach(function (l) { if (ok[l.cat]) cont[l.cat] = (cont[l.cat] || 0) + 1; });
+  var arr = Object.keys(ok).sort(function (a, b) { return (cont[b] || 0) - (cont[a] || 0); });
+  return arr.slice(0, 6);
+}
+function lancSheet() {
+  var d = draft, ps = pessoas(), cats = catsDoTipo(d.tipo), top = maisUsadas(d.tipo);
+  if (d.cat && top.indexOf(d.cat) < 0 && cats.some(function (c) { return c.Categoria === d.cat; })) top = [d.cat].concat(top.slice(0, 5));
+  var byMacro = {}; cats.forEach(function (c) { (byMacro[c.Macro] = byMacro[c.Macro] || []).push(c.Categoria); });
+  var sel = '<select id="lCat" class="inp" data-input="lcat"><option value="">Todas as categorias…</option>' + Object.keys(byMacro).map(function (m) { return '<optgroup label="' + esc(m) + '">' + byMacro[m].map(function (c) { return '<option' + (c === d.cat ? ' selected' : '') + '>' + esc(c) + '</option>'; }).join('') + '</optgroup>'; }).join('') + '</select>';
+  var corValor = d.tipo === 'Entrada' ? 'var(--ok-text)' : (d.tipo === 'Aporte' ? 'var(--brand-text)' : 'var(--fg)');
+  var h = '<div class="scrim" data-act="scrim"><form class="sheet" id="lancForm" role="dialog" aria-modal="true" aria-label="Lançamento"><div class="grab"></div>' +
+    '<div class="sheet-h"><h2>' + (d.id ? 'Editar lançamento' : 'Novo lançamento') + '</h2><button type="button" class="iconbtn" data-act="close" aria-label="Fechar">' + ic('x', 22) + '</button></div>' +
+    '<div class="seg" role="group" aria-label="Tipo">' + ['Saída','Entrada','Aporte'].map(function (t) { return '<button type="button" data-act="lset" data-k="tipo" data-v="' + t + '" aria-pressed="' + (d.tipo === t) + '">' + t + '</button>'; }).join('') + '</div>' +
+    '<div class="amount"><label for="lValor" class="small muted" style="font-weight:600">Valor</label><input id="lValor" inputmode="decimal" placeholder="0,00" data-input="lvalor" value="' + esc(d.valor) + '" style="color:' + corValor + '"></div>' +
+    '<div class="fld"><span class="lab">Categoria</span><div class="chips">' + top.map(function (c) { return '<button type="button" class="chip" data-act="lset" data-k="cat" data-v="' + esc(c) + '" aria-pressed="' + (d.cat === c) + '">' + esc(c) + '</button>'; }).join('') + '</div>' + sel +
+    '<span class="tiny muted" id="lMacro">' + (d.cat ? 'Macro: <strong>' + esc(catMacro()[d.cat] || '') + '</strong>' : 'Escolham uma categoria') + '</span></div>' +
+    '<div class="grid2"><div class="fld"><label for="lData">Data</label><input type="date" id="lData" class="inp" data-input="ldata" value="' + esc(d.data) + '"></div>' +
+    '<div class="fld"><label for="lDesc">Descrição</label><input id="lDesc" class="inp" data-input="ldesc" value="' + esc(d.desc) + '" placeholder="Opcional"></div></div>' +
+    '<div class="fld"><span class="lab">' + (d.tipo === 'Entrada' ? 'Quem recebeu' : 'Quem pagou') + '</span><div class="seg" role="group">' + ps.map(function (p) { return '<button type="button" data-act="lset" data-k="pessoa" data-v="' + esc(p) + '" aria-pressed="' + (d.pessoa === p) + '">' + esc(p) + '</button>'; }).join('') + '</div></div>';
+  if (d.tipo !== 'Entrada') {
+    h += '<div class="fld"><span class="lab">Conta de quem</span><div class="seg" role="group"><button type="button" data-act="lset" data-k="rateio" data-v="Casa" aria-pressed="' + (d.rateio === 'Casa') + '">Da casa (divide)</button><button type="button" data-act="lset" data-k="rateio" data-v="Pessoal" aria-pressed="' + (d.rateio === 'Pessoal') + '">Pessoal</button></div></div>' +
+      '<div class="fld"><span class="lab">Forma de pagamento</span><div class="chips">' + FORMAS.map(function (f) { return '<button type="button" class="chip" data-act="lset" data-k="forma" data-v="' + esc(f) + '" aria-pressed="' + (d.forma === f) + '">' + esc(f) + '</button>'; }).join('') + '</div></div>';
+  }
+  h += '<div id="lImpact">' + impactoHtml() + '</div>' +
+    '<button class="btn" type="submit">' + (d.id ? 'Salvar alterações' : 'Salvar lançamento') + '</button>' +
+    (d.id ? '<button class="btn danger" type="button" data-act="ldel">' + (d.del ? 'Toque de novo para excluir' : 'Excluir lançamento') + '</button>' : '') + '</form></div>';
+  return h;
+}
+function impactoHtml() {
+  var d = draft; if (!d || !d.cat || d.tipo !== 'Saída') return '';
+  var v = num(d.valor); if (!v) return '';
+  var cm = catMacro(), L = lancs().filter(function (l) { return l.id !== d.id; });
+  var novo = { d:parseD(d.data) || today(), cat:d.cat, macro:cm[d.cat], tipo:'Despesa', v:v };
+  var piores = [];
+  ['Semanal','Mensal','Anual'].forEach(function (k) {
+    var per = periodo(k, 0);
+    if (!inRange(novo.d, per.s, per.e)) return;
+    (data.Orcamentos || []).forEach(function (b) {
+      if (b.Periodicidade !== k || String(b.Ativo || 'Sim') === 'Não' || !num(b.Limite)) return;
+      if (!(b.Escopo === 'Total' || (b.Escopo === 'Macro' && b.Alvo === novo.macro) || (b.Escopo === 'Categoria' && b.Alvo === novo.cat))) return;
+      var g = gastoNo(b, per.s, per.e, L, cm, novo), p = g / num(b.Limite);
+      piores.push({ b:b, g:g, p:p, k:k });
+    });
+  });
+  if (!piores.length) return '<div class="callout brand">Esta categoria não tem limite definido.</div>';
+  piores.sort(function (a, b) { return b.p - a.p; });
+  var x = piores[0], st = status(x.p), quando = { Semanal:'da semana', Mensal:'do mês', Anual:'do ano' }[x.k];
+  return '<div class="callout ' + (st === 'ok' ? 'brand' : st) + '"><span class="t-' + st + '">' + ic('alert', 20) + '</span><span>Com este lançamento, <strong>' + esc(x.b.Nome) + '</strong> fica em ' + pctf(x.p) + ' do limite ' + quando + ' (' + brl0(x.g) + ' de ' + brl0(num(x.b.Limite)) + ').</span></div>';
+}
+function salvarLanc() {
+  var d = draft, v = num(d.valor);
+  if (!v) { toast('Informe o valor.'); return; }
+  if (!d.cat) { toast('Escolha a categoria.'); return; }
+  var row = { ID: d.id || uid('L'), Data:d.data || ymd(today()), Categoria:d.cat, Descricao:d.desc, Valor:v, Pessoa:d.pessoa, Rateio: d.tipo === 'Entrada' ? 'Pessoal' : d.rateio, FormaPagamento: d.tipo === 'Entrada' ? 'Transferência' : d.forma };
+  if (!d.id) { var n = new Date(); row.CriadoEm = ymd(n) + 'T' + pad(n.getHours()) + ':' + pad(n.getMinutes()); row.CriadoPor = cfg.autor || d.pessoa; }
+  var ehNovo = !d.id;
+  fecharSheet(); salvar('Lancamentos', row);
+  toast(ehNovo ? 'Lançamento salvo' : 'Lançamento atualizado');
+}
+
+/* ---- formulários das outras abas ---- */
+function achar(sheet, id) { var k = keyOf(sheet); return (data[sheet] || []).filter(function (r) { return String(r[k]) === String(id); })[0]; }
+function formGenerico(sheet, titulo, fields, row, novoId) {
+  var existe = !!row;
+  abrirForm({ title:titulo, fields:fields, values: row || {},
+    onSave: function (v) { var k = keyOf(sheet); v[k] = existe ? row[k] : (novoId || uid(sheet.charAt(0))); salvar(sheet, v); toast('Salvo'); },
+    onDelete: existe && sheet !== 'Config' ? function () { excluir(sheet, row[keyOf(sheet)]); toast('Excluído'); } : null });
+}
+function formOrc(row) {
+  var cats = (data.Categorias || []).map(function (c) { return c.Categoria; });
+  var alvos = [{ v:'', t:'(todas as despesas)' }].concat(macrosOrdenadas().map(function (m) { return { v:m, t:'Macro · ' + m }; }), cats.map(function (c) { return { v:c, t:c }; }));
+  var v = row ? Object.assign({}, row) : { Periodicidade:'Mensal', Ativo:'Sim' };
+  abrirForm({ title: row ? 'Editar limite' : 'Novo limite', values:v,
+    fields:[{ name:'Nome', label:'Nome', ph:'Ex.: Mercado da semana' }, { name:'Alvo', label:'O que entra no limite', type:'select', options:alvos }, { name:'Periodicidade', label:'Período', type:'seg', options:['Semanal','Mensal','Anual'] }, { name:'Limite', label:'Limite (R$)', type:'money' }, { name:'Ativo', label:'Ativo', type:'seg', options:['Sim','Não'] }, { name:'Obs', label:'Observação' }],
+    onSave: function (x) {
+      x.Escopo = !x.Alvo ? 'Total' : (macrosOrdenadas().indexOf(x.Alvo) >= 0 ? 'Macro' : 'Categoria');
+      if (!x.Nome) x.Nome = x.Alvo || 'Todas as despesas';
+      x.ID = row ? row.ID : uid('O'); salvar('Orcamentos', x); toast('Limite salvo');
+    },
+    onDelete: row ? function () { excluir('Orcamentos', row.ID); toast('Limite excluído'); } : null });
+}
+function formPlano(row) {
+  formGenerico('Planos', row ? 'Editar plano' : 'Novo plano', [
+    { name:'Objetivo', label:'Objetivo' }, { name:'Horizonte', label:'Horizonte', type:'seg', options:['Curto prazo','Médio prazo','Longo prazo'] },
+    { name:'ValorNecessario', label:'Valor necessário', type:'money', pair:true }, { name:'JaGuardado', label:'Já guardado', type:'money' },
+    { name:'DataAlvo', label:'Data-alvo', type:'date', pair:true }, { name:'Status', label:'Status', type:'select', options:['A definir','Planejado','Em andamento','Concluído','Pausado','Cancelado'] },
+    { name:'Motivo', label:'Por que é importante', type:'textarea' }, { name:'ProximoPasso', label:'Próximo passo' }, { name:'Responsavel', label:'Responsável', type:'select', options:['Casal'].concat(pessoas()) }
+  ], row);
+}
+function formDivida(row) {
+  formGenerico('Dividas', row ? 'Editar dívida' : 'Nova dívida', [
+    { name:'Divida', label:'Dívida' }, { name:'Credor', label:'Credor' },
+    { name:'SaldoDevedor', label:'Saldo devedor', type:'money', pair:true }, { name:'Parcela', label:'Parcela mensal', type:'money' },
+    { name:'ParcelasRestantes', label:'Parcelas restantes', type:'number', pair:true }, { name:'JurosMes', label:'Juros ao mês (%)', type:'percent', ph:'Ex.: 1,5' },
+    { name:'Obs', label:'Observação', type:'textarea' }
+  ], row);
+}
+function formRisco(row) {
+  formGenerico('Riscos', 'Risco', [
+    { name:'Risco', label:'Risco' }, { name:'Aplica', label:'Aplica-se a vocês?', type:'seg', options:['Sim','Não'] },
+    { name:'Probabilidade', label:'Probabilidade (1 = muito improvável · 5 = quase certo)', type:'seg', num:true, options:['1','2','3','4','5'] },
+    { name:'Impacto', label:'Impacto (1 = incômodo leve · 5 = muda a vida)', type:'seg', num:true, options:['1','2','3','4','5'] },
+    { name:'Status', label:'Status', type:'select', options:['Aberto','Em tratamento','Controlado','Encerrado'] },
+    { name:'Mitigacao', label:'Como resolver ou mitigar', type:'textarea' }, { name:'UltimaRevisao', label:'Última revisão', type:'date' }
+  ], row ? Object.assign({}, row, { UltimaRevisao: ymd(today()) }) : null);
+}
+function formComb(row) {
+  formGenerico('Combinados', row.Tema || 'Combinado', [
+    { name:'Pergunta', label:'Pergunta' }, { name:'Decisao', label:'Decisão de vocês', type:'textarea' },
+    { name:'DataDecisao', label:'Data da decisão', type:'date', pair:true }, { name:'RevisarEm', label:'Revisar em', type:'date' }
+  ], Object.assign({}, row, { DataDecisao: row.DataDecisao || ymd(today()) }));
+}
+function formReuniao(row) {
+  formGenerico('Reunioes', row ? 'Reunião' : 'Registrar reunião', [
+    { name:'Data', label:'Data', type:'date', pair:true }, { name:'Participantes', label:'Participantes' },
+    { name:'Pontos', label:'Principais pontos', type:'textarea' }, { name:'Decisoes', label:'Decisões', type:'textarea' }, { name:'Pendencias', label:'Pendências', type:'textarea' },
+    { name:'Responsavel', label:'Responsável', type:'select', options:['Casal'].concat(pessoas()), pair:true }, { name:'Prazo', label:'Prazo', type:'date' }
+  ], row || { Data: ymd(today()), Participantes: pessoas().join(' e ') });
+}
+
+/* =================== render e eventos =================== */
+var TABS = [['inicio','Início','home'],['orcamentos','Orçamentos','list'],['lancar','','plus'],['metas','Metas','target'],['casal','Casal','people']];
+function render() {
+  var v = { inicio:vInicio, orcamentos:vOrcamentos, metas:vMetas, casal:vCasal, lista:vLista, config:vConfig }[ui.tab] || vInicio;
+  document.getElementById('view').innerHTML = v();
+  var cur = ui.tab === 'lista' || ui.tab === 'config' ? 'inicio' : ui.tab;
+  document.getElementById('nav').innerHTML = TABS.map(function (t) {
+    if (t[0] === 'lancar') return '<button data-act="novoLanc" aria-label="Novo lançamento"><span class="fab">' + ic('plus', 26) + '</span></button>';
+    return '<button data-act="go" data-tab="' + t[0] + '"' + (cur === t[0] ? ' aria-current="page"' : '') + '>' + ic(t[2], 22) + t[1] + '</button>';
+  }).join('');
+  renderSheet();
+}
+var toastT;
+function toast(msg) { var r = document.getElementById('toastRoot'); r.innerHTML = '<div class="toast">' + esc(msg) + '</div>'; clearTimeout(toastT); toastT = setTimeout(function () { r.innerHTML = ''; }, 2600); }
+
+var ACT = {
+  go: function (d) { ui.tab = d.tab; ui.q = ''; window.scrollTo(0, 0); render(); },
+  ym: function (d) { ui.ym = shiftYm(ui.ym, +d.n); render(); },
+  per: function (d) { ui.off[d.k] += +d.n; render(); },
+  refresh: function () { carregar(false); },
+  novoLanc: function () { abrirLanc(null); },
+  editLanc: function (d) { abrirLanc(d.id); },
+  lset: function (d) {
+    syncDraftInputs();
+    draft[d.k] = d.v;
+    if (d.k === 'tipo') { var cs = catsDoTipo(d.v).map(function (c) { return c.Categoria; }); if (cs.indexOf(draft.cat) < 0) draft.cat = ''; }
+    renderSheet();
+  },
+  ldel: function () { if (!draft.del) { draft.del = true; syncDraftInputs(); renderSheet(); return; } var id = draft.id; fecharSheet(); excluir('Lancamentos', id); toast('Lançamento excluído'); },
+  close: fecharSheet,
+  scrim: function (d, e) { if (e.target.classList.contains('scrim')) fecharSheet(); },
+  fseg: function (d, e) {
+    var wrap = e.target.closest('.fld');
+    wrap.querySelectorAll('button').forEach(function (b) { b.setAttribute('aria-pressed', String(b === e.target.closest('button'))); });
+    wrap.querySelector('input[type=hidden]').value = d.v;
+  },
+  fdel: function () { if (!form.confirmDel) { var vals = lerForm(); Object.assign(form.values, vals); form.confirmDel = true; renderSheet(); return; } var f = form; fecharSheet(); f.onDelete(); },
+  novoOrc: function () { formOrc(null); },
+  editOrc: function (d) { formOrc(achar('Orcamentos', d.id)); },
+  novoPlano: function () { formPlano(null); },
+  editPlano: function (d) { formPlano(achar('Planos', d.id)); },
+  novaDivida: function () { formDivida(null); },
+  editDivida: function (d) { formDivida(achar('Dividas', d.id)); },
+  debtOrder: function (d) { ui.debtOrder = d.v; render(); },
+  riskF: function (d) { ui.riskFilter = d.v; render(); },
+  editRisco: function (d) { formRisco(achar('Riscos', d.id)); },
+  feito: function (d) { var c = achar('Controles', d.id); salvar('Controles', { ID:c.ID, UltimaVerificacao: ymd(today()), Resultado:'OK' }); toast('Controle registrado hoje'); },
+  editComb: function (d) { formComb(achar('Combinados', d.id)); },
+  novaReuniao: function () { formReuniao(null); },
+  editReuniao: function (d) { formReuniao(achar('Reunioes', d.id)); },
+  editConfig: function (d) { var c = achar('Config', d.id); formGenerico('Config', c.Descricao || c.Chave, [{ name:'Valor', label:'Valor', help:c.Chave }], c); },
+  conectar: function () {
+    cfg.url = document.getElementById('cfgUrl').value.trim(); cfg.token = document.getElementById('cfgToken').value.trim(); cfg.autor = document.getElementById('cfgAutor').value;
+    if (!cfg.url || !cfg.token) { toast('Preencha a URL e o token.'); return; }
+    if (!/^https:\/\/script\.google(usercontent)?\.com\//.test(cfg.url)) { toast('A URL deve ser do Apps Script (script.google.com).'); return; }
+    var antes = cfg.demo; cfg.demo = false; lsSet(LS.cfg, cfg);
+    if (antes) { queue = []; lsSet(LS.queue, queue); }
+    carregar(false).then(function () {
+      if (sync.state === 'ok') { ui.tab = 'inicio'; }
+      else if (antes) { cfg.demo = true; lsSet(LS.cfg, cfg); }
+      render();
+    });
+  },
+  demo: function () {
+    cfg.demo = true; lsSet(LS.cfg, cfg); queue = []; lsSet(LS.queue, queue);
+    data = clone(DEMO_DATA) || emptyData(); lsSet(LS.data, data); sync.state = 'demo'; render(); toast('Dados de exemplo carregados');
+  }
+};
+function syncDraftInputs() {
+  if (!draft) return;
+  var g = function (id) { var e = document.getElementById(id); return e ? e.value : null; };
+  var v = g('lValor'); if (v != null) draft.valor = v;
+  v = g('lData'); if (v != null) draft.data = v;
+  v = g('lDesc'); if (v != null) draft.desc = v;
+}
+document.addEventListener('click', function (e) {
+  var el = e.target.closest('[data-act]'); if (!el) return;
+  var a = el.dataset.act;
+  if (a === 'scrim' && el !== e.target) return;
+  if (ACT[a]) { e.preventDefault(); ACT[a](el.dataset, e); }
+});
+document.addEventListener('submit', function (e) {
+  e.preventDefault();
+  if (e.target.id === 'lancForm') { syncDraftInputs(); salvarLanc(); return; }
+  if (e.target.id === 'sheetForm' && form) { var v = lerForm(), f = form; fecharSheet(); f.onSave(v); }
+});
+document.addEventListener('input', function (e) {
+  var k = e.target.dataset && e.target.dataset.input; if (!k) return;
+  if (k === 'busca') { ui.q = e.target.value; var box = document.getElementById('listaBox'); if (box) box.innerHTML = listaHtml(lancs().filter(function (l) { return ymOf(l.d) === ui.ym; })); }
+  if (k === 'sim') { ui.sim[e.target.dataset.id] = e.target.value; var d = achar('Dividas', e.target.dataset.id), out = document.getElementById('sim-' + d.ID); if (out) out.innerHTML = simHtml(d); }
+  if (draft && (k === 'lvalor' || k === 'ldata' || k === 'ldesc')) { syncDraftInputs(); var im = document.getElementById('lImpact'); if (im) im.innerHTML = impactoHtml(); }
+});
+document.addEventListener('change', function (e) {
+  if (e.target.dataset && e.target.dataset.input === 'lcat' && draft) { syncDraftInputs(); draft.cat = e.target.value; renderSheet(); }
+});
+document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && (form || draft)) fecharSheet(); });
+window.addEventListener('online', function () { flush(); });
+document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible' && online()) carregar(true); });
+
+render();
+if (online()) carregar(true);
+})();
+</script>
+
+<script>if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js');</script>
+</body>
+</html>
